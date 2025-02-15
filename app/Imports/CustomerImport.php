@@ -19,12 +19,9 @@ class CustomerImport implements ToModel, WithHeadingRow
         return new Customer([
             'business_name'     => Str::upper($row['razon_social']),
             'rut'               => $row['rut'],
-            'name'              => $row['contacto'],
-            'giro'              => $row['giro'],
+            'name'              => $row['representante'],
             'email'             => $row['correo'],
-            'email_secondary'   => $row['correo_secundario'],
             'phone'             => $row['telefono'],
-            'comuna'            => $row['comuna'],
             'address'           => $row['direccion'],
         ]);
     }

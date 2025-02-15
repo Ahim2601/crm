@@ -58,10 +58,6 @@
                             <strong>Contacto o Representante:</strong><br>
                             <span id="contacto"></span>
                         </div>
-                        <div class="col-md-4">
-                            <strong>Giro:</strong><br>
-                            <span id="giro"></span>
-                        </div>
 
                         <div class="col-md-4">
                             <strong>Telefono:</strong><br>
@@ -71,11 +67,6 @@
                         <div class="col-md-4">
                             <strong>Correo:</strong><br>
                             <span id="email"></span>
-                        </div>
-
-                        <div class="col-md-4">
-                            <strong>Comuna:</strong><br>
-                            <span id="comuna"></span>
                         </div>
 
                         <div class="col-md-6">

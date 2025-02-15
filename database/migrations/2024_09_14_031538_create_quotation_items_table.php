@@ -14,13 +14,11 @@ return new class extends Migration
         Schema::create('quotation_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('quotation_id')->constrained('quotations')->onDelete('cascade');
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->string('reference')->nullable();
             $table->string('product_name');
-            $table->string('product_code');
             $table->integer('quantity');
+            $table->string('unit')->nullable();
             $table->decimal('price', 10, 0);
-            $table->decimal('profit', 10, 0);
-            $table->decimal('margen', 10, 0)->nullable();
             $table->decimal('subtotal', 10, 0)->nullable();
             $table->timestamps();
         });

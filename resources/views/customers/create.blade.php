@@ -11,11 +11,9 @@
                         <a href="{{ route('category.index') }}" class="btn btn-sm btn-secondary"
                         ><i class="ri-arrow-left-line me-1"></i> Regresar</a>
                     </div>
-                    <!-- <h5 class="card-header">Crear Categoría</h5> -->
 
                     <div class="card-body">
                         <form id="formCategory" class="needs-validation" action="{{ route('customer.store') }}" method="POST">
-                           {{ $errors}}
                             @csrf
                             <div class="row">
                                 <div class="mb-6 col-md-4">
@@ -32,6 +30,25 @@
                                         @if($errors->has('business_name'))
                                         <div class="invalid-feedback">
                                             {{ $errors->first('business_name') }}
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="mb-6 col-md-4">
+                                    <div class="form-floating form-floating-outline">
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            class="form-control @if($errors->has('name')) is-invalid @endif"
+                                            placeholder="Ingrese Representate"
+                                            value="{{ old('name') }}"
+                                        />
+                                        <label for="code">Representate</label>
+                                        @if($errors->has('name'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('name') }}
                                         </div>
                                         @endif
                                     </div>
@@ -93,7 +110,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-6 col-md-6">
+                                <div class="mb-6 col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         <input
                                             type="text"

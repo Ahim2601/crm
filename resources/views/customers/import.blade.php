@@ -11,13 +11,16 @@
                         <a href="{{ route('customer.index') }}" class="btn btn-sm btn-secondary"
                         ><i class="ri-arrow-left-line me-1"></i> Regresar</a>
                     </div>
-                    <!-- <h5 class="card-header">Crear Categoría</h5> -->
 
                     <div class="card-body">
                         <form id="formCategory" class="needs-validation" action="{{ route('customer.importData') }}" method="POST"
                         enctype="multipart/form-data">
                             @csrf
                             <div class="row">
+                                <div class="mb-6 col-md-12">
+                                    <p><strong>Nota:</strong> El archivo debe ser en formato excel, y se le coloca un enlace
+                                    para descargar el formato correspondiente para la importación inical de clientes.  <a href="{{ asset('assets/files/formato-clientes.xlsx') }}">Descargar</a> </p>
+                                </div>
                                 <div class="mb-6 col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         <input class="form-control" type="file" id="formFile" name="archivo">

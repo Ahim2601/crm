@@ -41,9 +41,9 @@ class QuotationController extends Controller
                 ->join('users', 'quotations.user_id', '=', 'users.id')
                 ->join('customers', 'quotations.customer_id', '=', 'customers.id')
                 ->join('quotation_items', 'quotations.id', '=', 'quotation_items.quotation_id')
-                ->select('quotations.*', DB::raw('SUM(quotation_items.margen) as total_profit'), 'users.name as user', 'customers.business_name as customer', 'customers.rut as rut')
+                ->select('quotations.*', 'users.name as user', 'customers.business_name as customer',
+                    'customers.rut as rut')
                 ->orderBy('quotations.created_at', 'desc')
-                ->where('quotations.status', '!=', 'Pagado')
                 ->groupBy('quotations.id', 'users.name', 'customers.business_name', 'customers.rut');
             return DataTables::of($data)
                 ->filter(function ($query) use ($request) {
@@ -103,53 +103,25 @@ class QuotationController extends Controller
     {
         $customer = Customer::where('business_name', $request->customer)->first();
         $productos = json_decode($request->array_products);
-        $file_propuesta = null;
-        $correlativoInicial = 1001;
-        $nroOrden = 0;
-        $count = Quotation::count();
-        if ($count > 0) {
-            $data = Quotation::latest()->first();
-            $nroOrden = $data->correlativo + 1;
-        } else {
-            $nroOrden = 1001;
-        }
-        if ($request->hasFile('file_propuesta')) {
-            $uploadPath = public_path('/storage/contratos/');
-            $file = $request->file('file_propuesta');
-            $extension = $file->getClientOriginalExtension();
-            $uuid = Str::uuid(4);
-            $fileName = $uuid . '.' . $extension;
-            $file->move($uploadPath, $fileName);
-            $url = '/storage/cotizaciones/'.$fileName;
-            $foto = $url;
-            $file_propuesta = $url;
-        }
 
         $quote = Quotation::create([
             'customer_id'    => $customer->id,
             'user_id'        => auth()->user()->id,
-            'customer_name'  => $request->customer,
             'subtotal'       => $request->subtotal,
             'iva'            => $request->iva,
+            'discount'       => $request->discount,
             'grand_total'    => $request->total,
-            'file_propuesta' => $file_propuesta,
             'note'           => $request->note,
-            'correlativo'    => $nroOrden,
-            'closing_date'   => $request->closing_date,
-            'closing_percentage' => $request->closing_percentage,
         ]);
 
         foreach ($productos as $key) {
-            $product = Product::where('code', $key->code)->first();
             QuotationItem::create([
                 'quotation_id'   => $quote->id,
-                'product_id'     => $product->id,
-                'product_name'   => $product->name,
-                'product_code'   => $product->code,
+                'reference'      => $key->reference,
+                'product_name'   => $key->producto,
                 'quantity'       => $key->quantity,
+                'unit'           => $key->tipo,
                 'price'          => $key->price,
-                'profit'         => $key->profit,
-                'margen'         => $key->margen,
                 'subtotal'       => $key->subtotal,
             ]);
         }
@@ -162,7 +134,7 @@ class QuotationController extends Controller
      */
     public function show($quotation)
     {
-        $data = Quotation::with('items')->find($quotation);
+        $data = Quotation::with('items', 'customer')->find($quotation);
         return response()->json($data);
     }
 
@@ -172,9 +144,9 @@ class QuotationController extends Controller
     public function edit($quotation)
     {
         $customers = Customer::all();
-        $products = Product::all();
+        $categorys = Category::all();
         $quotation = Quotation::with('items')->find($quotation);
-        return view('quotes.edit', compact('quotation', 'customers', 'products'));
+        return view('quotes.edit', compact('quotation', 'customers', 'categorys'));
     }
 
     /**
@@ -184,44 +156,27 @@ class QuotationController extends Controller
     {
         $customer = Customer::where('business_name', $request->customer)->first();
         $productos = json_decode($request->array_products);
-        $file_propuesta = null;
-        if ($request->hasFile('file_propuesta')) {
-            $uploadPath = public_path('/storage/cotizaciones/');
-            $file = $request->file('file_propuesta');
-            $extension = $file->getClientOriginalExtension();
-            $uuid = Str::uuid(4);
-            $fileName = $uuid . '.' . $extension;
-            $file->move($uploadPath, $fileName);
-            $url = '/storage/cotizaciones/'.$fileName;
-            $foto = $url;
-            $file_propuesta = $url;
-        }
-
         $quote = Quotation::find($quotation);
         $quote->update([
             'customer_id'    => $customer->id,
-           'user_id'        => auth()->user()->id,
-            'customer_name'  => $request->customer,
+            'user_id'        => auth()->user()->id,
             'subtotal'       => $request->subtotal,
             'iva'            => $request->iva,
+            'discount'       => $request->discount,
             'grand_total'    => $request->total,
-            'file_propuesta' => $file_propuesta,
             'note'           => $request->note
         ]);
 
         $quote->items()->delete();
 
         foreach ($productos as $key) {
-            $product = Product::where('code', $key->code)->first();
             QuotationItem::create([
                 'quotation_id'   => $quote->id,
-                'product_id'     => $product->id,
-                'product_name'   => $product->name,
-                'product_code'   => $product->code,
+                'reference'      => $key->reference,
+                'product_name'   => $key->producto,
                 'quantity'       => $key->quantity,
+                'unit'           => $key->tipo,
                 'price'          => $key->price,
-                'profit'         => $key->profit,
-                'margen'         => $key->margen,
                 'subtotal'       => $key->subtotal,
             ]);
         }
@@ -261,7 +216,7 @@ class QuotationController extends Controller
         }
 
         $publicpath = public_path('storage/cotizaciones/');
-        $namepdf = config('app.name', 'Laravel').' - cotizacion - '.$quotation->customer_name.' - '.date('Y-m-d').'.pdf';
+        $namepdf = config('app.name', 'Laravel').' - cotizacion - '.$quotation->customer->business_name.' - '.date('Y-m-d').'.pdf';
         $urlpdf = $publicpath.$namepdf;
 
 
@@ -286,103 +241,9 @@ class QuotationController extends Controller
         $quote->update([
             'status' => $request->status
         ]);
-
-        // if ($request->status == 'Facturado') {
-        //     $this->createInvoice($request->id);
-        // }
         return redirect()->route('quote.index')->with('success', 'Status de Cotización Actualizada Correctamente');
     }
 
-    public function addReferencias(Request $request)
-    {
-        $quotation = Quotation::find($request->id);
-        $quotation->update([
-            'invoice_number' => $request->invoice_number,
-        ]);
 
 
-        return redirect()->route('quote.index')->with('success', 'Número de Factura de Cotización agregada Correctamente');
-    }
-
-    public function correlation()
-    {
-        $nro = Correlative::where('type', 'contract')->first();
-        $correlativoInicial = $nro->correlative_initial;
-        $correlativUltimo = $nro->correlative_last + 1;
-
-        $count = Contract::count();
-        if ($count > 0) {
-            $data = Contract::latest()->first();
-            $nroOrden = $correlativUltimo;
-            $nro->update([
-                'correlative_last' => $correlativUltimo,
-            ]);
-        } else {
-            $nroOrden = $correlativoInicial;
-        }
-        return $nroOrden;
-
-    }
-
-    public function correlationInvoice()
-    {
-        $nro = Correlative::where('type', 'Invoice')->first();
-        $correlativoInicial = $nro->correlative_initial;
-        $correlativUltimo = $nro->correlative_last + 1;
-
-        $count = Invoice::count();
-
-        if ($count > 0) {
-            $data = Invoice::latest()->first();
-            $nroOrden = $data->correlativo + 1;
-            $nro->update([
-                'correlative_last' => $correlativUltimo,
-            ]);
-        } else {
-            $nroOrden = $correlativoInicial;
-        }
-
-        return $nroOrden;
-    }
-
-    public function saveFile($archivo)
-    {
-        if ($archivo != null) {
-            $uploadPath = public_path('/storage/cotizaciones/');
-            $file = $archivo;
-            $extension = $file->getClientOriginalExtension();
-            $uuid = Str::uuid(4);
-            $fileName = $uuid . '.' . $extension;
-            $file->move($uploadPath, $fileName);
-            $url = '/storage/cotizaciones/'.$fileName;
-            $file_propuesta = $url;
-        } else {
-            $file_propuesta = null;
-        }
-
-        return $file_propuesta;
-    }
-
-    public function createInvoice($quotation)
-    {
-        $data = Quotation::with('items', 'customer', 'items.product')->find($quotation);
-
-        $invoice_date = Carbon::now()->format('Y-m-d');
-        $invoice = Invoice::create([
-            'customer_id' => $data->customer_id,
-            'quotation_id' => $data->id,
-            'user_id' => auth()->user()->id,
-            'correlativo' => $this->correlationInvoice(),
-            'type' => 'Quotation',
-            'motive' => 'Cotizacion',
-            'net_amount' => $data->subtotal,
-            'iva' => $data->iva,
-            'total' => $data->grand_total,
-            'invoice_date' => $invoice_date,
-            'due_date' => Carbon::parse($invoice_date)->addDays(5),
-            'status' => 'Facturado',
-        ]);
-
-        return $invoice;
-    }
 }

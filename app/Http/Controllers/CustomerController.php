@@ -92,8 +92,13 @@ class CustomerController extends Controller
 
     public function importData(StoreImportCustomerRequest $request)
     {
-        Excel::import(new CustomerImport, $request->file('archivo'));
+        try {
+            Excel::import(new CustomerImport, $request->file('archivo'));
+            return redirect()->route('customer.index')->with('success', 'Data importada exitósamente');
 
-        return redirect()->route('customer.index')->with('success', 'Data importada exitósamente');
+        } catch (\Throwable $th) {
+            return redirect()->route('customer.index')->with('error', $th->getMessage());
+        }
+
     }
 }

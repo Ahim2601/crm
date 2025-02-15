@@ -24,7 +24,6 @@ $(function () {
             },
             columns: [
                 {data: 'business_name', name: 'business_name'},
-                {data: 'name_fantasy', name: 'name_fantasy'},
                 {data: 'rut', name: 'rut'},
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},

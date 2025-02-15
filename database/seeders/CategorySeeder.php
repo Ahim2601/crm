@@ -13,14 +13,8 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::create(['name' => 'Hosting']);
-        Category::create(['name' => 'Tiendas Online']);
-        Category::create(['name' => 'Servidores VPS']);
-        Category::create(['name' => 'Soporte TI']);
-        Category::create(['name' => 'Redes Sociales']);
-        Category::create(['name' => 'Desarrollo Web']);
-        Category::create(['name' => 'Hardware']);
-        Category::create(['name' => 'Redes']);
-        Category::create(['name' => 'Oficina']);
+        Category::create(['name' => 'MT']);
+        Category::create(['name' => 'INST']);
+        Category::create(['name' => 'INSU']);
     }
 }

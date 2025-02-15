@@ -7,13 +7,13 @@
                 <!-- Login -->
                 <div class="card p-md-7 p-1">
                     <!-- Logo -->
-                    <div class="app-brand justify-content-center mt-5">
-                        <img  src="{{ asset('assets/img/tigroup.png') }}" width="50%" alt="logo" />
+                    <div class="app-brand justify-content-center mt-3">
+                        <img  src="{{ asset('assets/img/logo.png') }}" width="60%" alt="logo" />
                     </div>
                     <!-- /Logo -->
 
-                    <div class="card-body mt-1">
-                        <h4 class="mb-5 text-center">Bienvenido! 👋</h4>
+                    <div class="card-body ">
+                        <h4 class="mb-3 text-center">Bienvenido! 👋</h4>
 
                         <form id="formAuthentication" class="mb-5" method="POST" action="{{ route('login') }}">
                             @csrf

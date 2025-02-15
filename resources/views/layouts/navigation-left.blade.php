@@ -3,7 +3,7 @@
                 <a href="{{ route('dashboard') }}" class="app-brand-link">
                     <span class="app-brand-logo demo">
                         <span style="color: var(--bs-primary)">
-                            <img src="{{ asset('assets/img/TIGroup.png') }}" width="185" height="70" alt="" >
+                            <img src="{{ asset('assets/img/logo-raisa.png') }}" width="165" height="60" alt="" >
                         </span>
                     </span>
                 </a>

@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
 @endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -41,47 +42,22 @@
                                 </div>
                                 <div class="mb-6 col-md-4">
                                     <div class="form-floating form-floating-outline">
-                                        <input class="form-control" type="file" name="file_propuesta">
-                                        <label for="code">Archivo de Propuesta detallada</label>
-                                        @if($errors->has('file_propuesta'))
+                                        <select id="bussines" name="bussines" class="form-select select2"
+                                        placeholder="Selecione una cliente">
+                                            <option value="">-- Seleccionar --</option>
+                                            <option value="Ciro">Ciro Climatizaciones</option>
+                                            <option value="Raisa">Raisa</option>
+                                        </select>
+                                        <label for="code">¿Quien Cotiza?</label>
+                                        @if($errors->has('bussines'))
                                         <div class="invalid-feedback">
-                                            {{ $errors->first('file_propuesta') }}
+                                            {{ $errors->first('bussines') }}
                                         </div>
                                         @endif
                                     </div>
                                 </div>
 
-                                <div class="mb-6 col-md-2">
-                                    <div class="form-floating form-floating-outline">
-                                        <input type="text" class="form-control flatpickr-input active"
-                                        placeholder="DD-MM-YYYY" name="closing_date" id="flatpickr-date"
-                                        value="{{ old('closing_date') }}">
-                                        <label for="date_closing">Fecha de Cierre</label>
-                                        @if($errors->has('closing_date'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('closing_date') }}
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="mb-6 col-md-2">
-                                    <div class="form-floating form-floating-outline">
-                                        <input
-                                            type="text"
-                                            id="closing_percentage"
-                                            name="closing_percentage"
-                                            class="form-control @if($errors->has('closing_percentage')) is-invalid @endif"
-                                            placeholder="Ingrese % de Cierre"
-                                            value="{{ old('closing_percentage') }}"
-                                        />
-                                        <label for="code">% de Cierre</label>
-                                        @if($errors->has('closing_percentage'))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first('closing_percentage') }}
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
+
                                 <div class="mb-6 col-md-12">
                                     <div class="form-floating form-floating-outline">
                                         <textarea name="note" id="note"
@@ -98,35 +74,31 @@
 
                                 <div class="w-100"></div>
 
-                                <div class="mb-6 col-md-4">
+                                <div class="mb-6 col-md-3">
                                     <div class="form-floating form-floating-outline">
-                                        <select id="producto" name="producto" class="form-select select2"
-                                        placeholder="Selecione una cliente">
+                                        <select id="reference" name="reference" class="form-select select2"
+                                        placeholder="Selecione una referencia">
                                             <option value="">-- Seleccionar --</option>
                                             @foreach ($products as $item)
-                                            <option value="{{ $item->id }}">{{ $item->code }} - {{ $item->name }}</option>
+                                            <option value="{{ $item->name }}"> {{ $item->name }}</option>
                                             @endforeach
                                         </select>
-                                        <label for="code">Referecia o Categoria</label>
+                                        <label for="code">Referencia o Categoria</label>
 
                                     </div>
-                                    <input type="hidden" name="product_name" id="product_name">
-                                    <input type="hidden" name="product_code" id="product_code">
                                 </div>
-
-                                <div class="mb-6 col-md-2">
+                                <div class="mb-6 col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         <input
-                                            type="number"
-                                            id="priceCost"
-                                            name="priceCost"
+                                            type="text"
+                                            id="producto"
+                                            name="producto"
                                             class="form-control"
                                             placeholder=""
                                         />
-                                        <label for="code">Precio de Venta</label>
+                                        <label for="code">Descripción</label>
                                     </div>
                                 </div>
-
                                 <div class="mb-6 col-md-2">
                                     <div class="form-floating form-floating-outline">
                                         <input
@@ -136,22 +108,32 @@
                                             class="form-control"
                                             placeholder=""
                                         />
-                                        <label for="code">Cantidad</label>
+                                        <label for="code">Cant.</label>
                                     </div>
                                 </div>
                                 <div class="mb-6 col-md-2">
                                     <div class="form-floating form-floating-outline">
                                         <input
                                             type="number"
-                                            id="profit"
-                                            name="profit"
+                                            id="price"
+                                            name="price"
                                             class="form-control"
                                             placeholder=""
                                         />
-                                        <label for="code">Profit (%)</label>
+                                        <label for="code">Precio Unitario</label>
                                     </div>
                                 </div>
                                 <div class="mb-6 col-md-2">
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="tipo" name="tipo" class="form-select select2"
+                                        placeholder="Selecione una cliente">
+                                            <option value="">-- Seleccionar --</option>
+                                            <option value="Unidad">Unidad</option>
+                                        </select>
+                                        <label for="code">Tipo </label>
+                                    </div>
+                                </div>
+                                <div class="mb-6 col-md-12 text-end">
                                     <button type="button" id="add_product" class="btn btn-info mt-1">
                                         Agregar
                                     </button>
@@ -164,12 +146,12 @@
                                         <table class="table" id="table_products">
                                             <thead>
                                                 <tr>
-                                                    <th>Producto</th>
+                                                    <th>Referencia</th>
+                                                    <th>Descripcion</th>
                                                     <th>Cantidad</th>
-                                                    <th>Costo Neto</th>
-                                                    <th>Profit</th>
-                                                    <th>Margen</th>
-                                                    <th>Precio Venta</th>
+                                                    <th>Tipo</th>
+                                                    <th>Valor</th>
+                                                    <th>Valor Total</th>
                                                     <th>Acciones</th>
                                                 </tr>
                                             </thead>
@@ -177,15 +159,19 @@
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="5" class="text-end">SubTotal</td>
-                                                    <td colspan="2" ><span id="subtotal">0</span></td>
+                                                    <td colspan="2"><span id="subtotal">0</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5" class="text-end">Descuento (0%)</td>
+                                                    <td colspan="2"><span id="descuento">0</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="5" class="text-end">IVA (19%)</td>
-                                                    <td colspan="2" ><span id="iva">0</span></td>
+                                                    <td colspan="2"><span id="iva">0</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="5" class="text-end">Total</td>
-                                                    <td colspan="2" ><span id="total">0</span></td>
+                                                    <td colspan="2"><span id="total">0</span></td>
                                                 </tr>
                                             </tfoot>
                                         </table>

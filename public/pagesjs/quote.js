@@ -6,15 +6,16 @@
 
     var dt_ajax_table = $('.datatables-quote');
     const numberFormat2 = new Intl.NumberFormat('de-DE');
-    var producto = $('#producto');
     const basepath = document.querySelector('html').getAttribute('data-base-url') + "assets/images/";
     const baseStorage = document.querySelector('html').getAttribute('data-base-url');
     var totalfinal = 0;
+    var totalDescuento = 0;
     var totalIVA = 0;
     var datosTabla = [];
     var totalCotizado = 0;
     var startInput;
     var endInput;
+    var i = 1;
     const flatpickrDate = document.querySelector('#flatpickr-date');
     const flatpickrRange = document.querySelector('#flatpickr-range');
 $(function () {
@@ -49,10 +50,6 @@ $(function () {
                     name: 'created_at'
                 },
                 {
-                    data: 'correlativo',
-                    name: 'correlativo'
-                },
-                {
                     data: 'customer',
                     name: 'customer'
                 },
@@ -65,10 +62,9 @@ $(function () {
                     name: 'subtotal'
                 },
                 {
-                    data: 'closing_date',
-                    name: 'closing_date'
+                    data: 'grand_total',
+                    name: 'grand_total'
                 },
-
                 {
                     data: 'status',
                     name: 'status'
@@ -81,19 +77,19 @@ $(function () {
                 },
             ],
             columnDefs: [{
-                targets: [0, 5],
+                targets: [0],
                 render: function (data) {
                     return moment(data).format('DD/MM/YYYY');
                 }
             },
             {
-                targets:[4],
+                targets:[3, 4],
                 render: function (data) {
                     return '$ ' + numberFormat2.format(data);
                 }
             },
             {
-                targets: [6],
+                targets: [5],
                 render: function (data, type, row) {
                     if (data == 'Cotizado') {
                         return `
@@ -104,88 +100,46 @@ $(function () {
                                     <li>
                                         <h6 class="dropdown-header text-uppercase">cambiar a</h6>
                                     </li>
-                                    <li><a class="dropdown-item" href="#" onclick="changeStatus('Facturado', ${row.id})">Facturado</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="changeStatus('Pagado', ${row.id})">Pagado</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="changeStatus('Aceptada', ${row.id})">Aceptado</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="changeStatus('Rechazada', ${row.id})">Rechazado</a></li>
                                 </ul>
                                 `;
                     }
-                    if (data == 'Facturado') {
-                        if (row.invoice_number == null) {
-                            return `<button type="button" class="btn btn-warning btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">`+data+`
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li>
-                                            <h6 class="dropdown-header text-uppercase">cambiar a</h6>
-                                        </li>
-                                        <li><a class="dropdown-item" href="#" onclick="addReferencia(${row.id})">Agregar Nro. de factura</a></li>
-                                        <li><a class="dropdown-item" href="#" onclick="changeStatus('Pagado', ${row.id})">Pagado</a></li>
-                                    </ul>
-                                `;
-                        }
-
-                        if (row.invoice_number != null) {
-                            return `<button type="button" class="btn btn-warning btn-sm dropdown-toggle"
+                    if (data == 'Aceptada')
+                    {
+                        return `<button type="button" class="btn btn-success btn-sm"
+                                    data-bs-toggle="dropdown" aria-expanded="false">`+data+`
+                                </button>
+                            `;
+                    }
+                    if (data == 'Rechazada')
+                        {
+                            return `<button type="button" class="btn btn-danger btn-sm"
                                         data-bs-toggle="dropdown" aria-expanded="false">`+data+`
                                     </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li>
-                                            <h6 class="dropdown-header text-uppercase">cambiar a</h6>
-                                        </li>
-                                        <li><a class="dropdown-item" href="#" onclick="changeStatus('Pagado', ${row.id})">Pagado</a></li>
-                                    </ul>
                                 `;
                         }
-
-
-                    }
                 }
             }],
             footerCallback: function (row, data, start, end, display) {
                 let api = this.api();
 
                 let total = api
-                    .column(4)
+                    .column(3)
                     .data()
                     .reduce(function (a, b) {
                         return parseFloat(a) + parseFloat(b);
                     }, 0);
-
-                let totalprofit = api
-                    .column(6)
-                    .data()
-                    .reduce(function (a, b) {
-                        return parseFloat(a) + parseFloat(b);
-                    }, 0);
-
-
                 $('#totalCotizado').html(
                     '$ ' + numberFormat2.format(total)
-                );
-                $('#totalProfit').html(
-                    '$ ' + numberFormat2.format(totalprofit)
                 );
             }
         });
     }
 
-    producto.on('select2:select', function(e) {
-        var id = producto.val();
-        $.ajax({
-            type: 'GET',
-            url: '/cotizaciones/'+id+'/productjson',
-            success: function(data) {
-                let costo = parseFloat(data.price).toFixed(0);
-                $('#priceCost').val(costo);
-                $('#product_name').val(data.name);
-                $('#product_code').val(data.code);
-            }
-        });
-    });
-
 
     $('#flatpickr-date').flatpickr({
         monthSelectorType: 'static',
-    //   dateFormat: 'd-m-Y',
         locale: 'es'
     });
 
@@ -229,116 +183,69 @@ $(function () {
     })
 
     $('#add_product').on('click', function() {
-        let producto = $('#product_name').val();
-        let code = $('#product_code').val();
-        let price = parseFloat($('#priceCost').val());
+        let reference = $('#reference').val();
+        let producto = $('#producto').val();
         let quantity = parseFloat($('#quantity').val());
-        let profit = ($('#profit').val() == '') ? 0 : parseFloat($('#profit').val());
-        let totalp = price * quantity;
-        let margen;
-        if (profit == 0) {
-            margen = 0;
-        } else {
-            margen = totalp * (profit / 100);
-        }
-        let subtotal = totalp + margen;
+        let price = parseFloat($('#price').val());
+        let tipo = $('#tipo').val();
 
-        if (datosTabla.length > 0) {
-            let index = datosTabla.findIndex((item) => item.code == code);
+        let subtotal = price * quantity;
 
-            if (index == -1) {
-                datosTabla.push({
-                    'code': code,
-                    'product': producto,
-                    'quantity': quantity,
-                    'price': price,
-                    'profit': profit,
-                    'margen': margen.toFixed(0),
-                    'subtotal': subtotal.toFixed(0)
-                });
-
-                $("#table_products tbody").append(
-                `<tr id="row-`+code+`">
-                    <td>`+producto+`</td>
-                    <td id="quantity-`+code+`">`+quantity+`</td>
-                    <td id="price-`+code+`">`+price+`</td>
-                    <td id="profit-`+code+`">`+profit+`</td>
-                    <td id="margen-`+code+`">`+margen.toFixed(0)+`</td>
-                    <td id="subtotal-`+code+`">`+subtotal.toFixed(0)+`</td>
-                    <td>
-                        <button type="button" class="btn btn-danger btn-sm"
-                            id="delete_product" data-code="`+code+`">
-                            <i class="ri-delete-bin-fill"></i>
-                        </button>
-                    </td>
-                </tr>`);
-
-            }
-
-            if (index != -1) {
-                datosTabla[index].quantity += quantity;
-                datosTabla[index].price = price;
-                datosTabla[index].profit = profit;
-                datosTabla[index].margen = datosTabla[index].price * (profit / 100);
-                datosTabla[index].subtotal = (datosTabla[index].quantity * datosTabla[index].price) + datosTabla[index].margen;
-
-                let IDqty = "#quantity-"+code;
-                let IDprice = "#price-"+code;
-                let IDprofit = "#profit-"+code;
-                let IDmargen = "#margen-"+code;
-                let IDsubtotal = "#subtotal-"+code;
-
-                $(IDqty).text(datosTabla[index].quantity);
-                $(IDprice).text(datosTabla[index].price);
-                $(IDprofit).text(datosTabla[index].profit);
-                $(IDmargen).text(datosTabla[index].margen);
-                $(IDsubtotal).text(datosTabla[index].subtotal);
-            }
-        }
-
-        if (datosTabla.length == 0 ) {
-            datosTabla.push({
-                'code': code,
-                'product': producto,
-                'quantity': quantity,
-                'price': price,
-                'profit': profit,
-                'margen': margen.toFixed(0),
-                'subtotal': subtotal.toFixed(0)
+        if (reference == '-- Seleccionar --' || producto == '' || quantity == '' || price == '' || tipo == '-- Seleccionar --') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Todos los campos son obligatorios',
+                customClass: {
+                    confirmButton: 'btn btn-primary waves-effect waves-light'
+                    },
+                buttonsStyling: false
             });
-
-            $("#table_products tbody").append(
-            `<tr id="row-`+code+`">
-                <td>`+producto+`</td>
-                <td id="quantity-`+code+`">`+quantity+`</td>
-                <td id="price-`+code+`">`+price+`</td>
-                <td id="profit-`+code+`">`+profit+`</td>
-                <td id="margen-`+code+`">`+margen.toFixed(0)+`</td>
-                <td id="subtotal-`+code+`">`+subtotal.toFixed(0)+`</td>
-                <td>
-                    <button type="button" class="btn btn-danger btn-sm"
-                        id="delete_product" data-code="`+code+`">
-                        <i class="ri-delete-bin-fill"></i>
-                    </button>
-                </td>
-            </tr>`);
-
+            return;
         }
+        datosTabla.push({
+            'code': i,
+            'reference': reference,
+            'producto': producto,
+            'quantity': quantity,
+            'tipo': tipo,
+            'price': price,
+            'subtotal': subtotal.toFixed(0)
+        });
+
+        let code = i;
+
+        $("#table_products tbody").append(
+        `<tr id="row-`+code+`">
+            <td>`+reference+`</td>
+            <td>`+producto+`</td>
+            <td>`+quantity+`</td>
+            <td>`+tipo+`</td>
+            <td>`+price+`</td>
+            <td>`+subtotal.toFixed(0)+`</td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm"
+                    id="delete_product" data-code="`+code+`">
+                    <i class="ri-delete-bin-fill"></i>
+                </button>
+            </td>
+        </tr>`);
+
+        i++;
+
         calcular();
-        $("#producto").val(null).trigger("change");
-        $("#product_name").val("");
-        $("#costo_venta").val('');
+        $("#reference").val(null).trigger("change");
+        $("#producto").val("");
+        $("#tipo").val(null).trigger("change");
         $("#quantity").val('');
-        $("#profit").val('');
-        $('#priceCost').val('');
-        $('#product_name').val('');
-        $('#product_code').val('');
+        $("#price").val('');
 
     });
 
     $('#table_products tbody').on('click', '#delete_product', function() {
         let product = $(this).data('code');
         let id = "#row-" + product;
+
 
         datosTabla = datosTabla.filter(function(item) {
             return item.code !== product;
@@ -399,35 +306,28 @@ function viewRecord(id) {
         url: "/cotizaciones/" + id + "/show",
         type: 'GET',
         success: function(res) {
-            $('#name').text(res.customer_name);
+            $('#id').text(res.id);
+            $('#name').text(res.customer.business_name);
             $('#date').text(moment(res.created_at).format('DD/MM/YYYY hh:mm A'));
-            $('#closing_date').text(moment(res.closing_date).format('DD/MM/YYYY '));
-            $('#closing_percentage').text(res.closing_percentage);
-            $('#number_invoice').text(res.number_invoice);
+
             $('#totalfinal').text(numberFormat2.format(res.grand_total));
             $('#subtotal').text(numberFormat2.format(res.subtotal));
             $('#iva').text(numberFormat2.format(res.iva));
             $('#total').text(numberFormat2.format(res.grand_total));
             $('#note').text(res.note);
-            if (res.file_propuesta != '') {
-                $('#file').empty();
-                $('#file').append('<a href="' + baseStorage + res.file_propuesta + '" target="_blank">Ver propuesta</a>');
-            }
-            if (res.file_propuesta == null){
-                $('#file').empty();
-                $('#file').append('Sin archivo');
-            }
+
 
 
             $('#details').empty();
             res.items.forEach((value, index) => {
                 $('#details')
                     .append('<tr>')
-                    .append('<td>' + value.product_code + '</td>')
+                    .append('<td>' + value.reference + '</td>')
                     .append('<td>' + value.product_name + '</td>')
                     .append('<td>' + value.quantity + '</td>')
+                    .append('<td>' + value.unit + '</td>')
                     .append('<td>' + numberFormat2.format(value.price) + '</td>')
-                    .append('<td>' + numberFormat2.format(value.total) + '</td>')
+                    .append('<td>' + numberFormat2.format(value.subtotal) + '</td>')
                     .append('</tr>');
             })
 

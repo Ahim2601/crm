@@ -33,33 +33,6 @@
                         </div>
                         <hr class="d-none d-sm-block d-lg-none">
                     </div>
-                    <div class="col-sm-6 col-lg-3">
-                        <div
-                            class="d-flex justify-content-between align-items-start border-end pb-4 pb-sm-0 card-widget-3">
-                            <div>
-                                <h4 class="mb-0" id="totalProfit">0</h4>
-                                <p class="mb-0">Total Profit</p>
-                            </div>
-                            <div class="avatar me-sm-6">
-                                <span class="avatar-initial rounded-3 bg-label-secondary">
-                                    <i class="ri-wallet-line text-heading ri-26px"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="col-sm-6 col-lg-3">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <div>
-                                <h4 class="mb-0">$876</h4>
-                                <p class="mb-0">Unpaid</p>
-                            </div>
-                            <div class="avatar">
-                                <span class="avatar-initial rounded-3 bg-label-secondary">
-                                    <i class="ri-money-dollar-circle-line text-heading ri-26px"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -141,11 +114,10 @@
                 <thead>
                     <tr>
                         <th>Fecha</th>
-                        <th>N° Coti</th>
                         <th>Cliente</th>
                         <th>Vendedor</th>
                         <th>Valor Neto</th>
-                        <th>F. Cierre</th>
+                        <th>Valor Total</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -160,7 +132,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalCenterTitle">Ver Cotizacion Nº <span id="correlativo"></span> </h5>
+                    <h5 class="modal-title" id="modalCenterTitle">Ver Cotizacion Nº <span id="id"></span> </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -177,28 +149,10 @@
                             <strong>Fecha de Cotización:</strong><br>
                             <span id="date"></span>
                         </div>
-                        <div class="col-md-4">
-                            <strong>Archivo de Propuesta detallada:</strong><br>
-                            <span id="file"></span>
-                        </div>
 
-                        <div class="col-md-4">
-                            <strong>Fecha de Cierre:</strong><br>
-                            <span id="closing_date"></span>
-                        </div>
-
-                        <div class="col-md-4">
-                            <strong>% de Cierre:</strong><br>
-                            <span id="closing_percentage"></span>
-                        </div>
-
-                        <div class="col-md-4">
-                            <strong>Nº de factura:</strong><br>
-                            <span id="number_invoice"></span>
-                        </div>
 
                         <div class="col-md-12">
-                            <strong>Notas:</strong><br>
+                            <strong>Observaciones:</strong><br>
                             <span id="note"></span>
                         </div>
 
@@ -210,12 +164,11 @@
                             <table class="table table-sm table-striped table-bordered nowrap w-100">
                                 <thead>
                                     <tr class="text-center text-uppercase fw-semibold">
-                                        <th>Código</th>
+                                        <th>Reference</th>
                                         <th>Articulo</th>
                                         <th>Cantidad</th>
+                                        <th>Unidad</th>
                                         <th>Precio</th>
-                                        <th>Profit</th>
-                                        <th>Margen</th>
                                         <th>Subtotal</th>
                                     </tr>
                                 </thead>
@@ -223,15 +176,15 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="6" class="text-end fw-semibold">Subtotal</td>
+                                        <td colspan="5" class="text-end fw-semibold">Subtotal</td>
                                         <td id="subtotal" class="text-center fw-semibold"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="6" class="text-end fw-semibold">IVA (% 19)</td>
+                                        <td colspan="5" class="text-end fw-semibold">IVA (% 19)</td>
                                         <td id="iva" class="text-center fw-semibold"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="6" class="text-end fw-semibold">Total</td>
+                                        <td colspan="5" class="text-end fw-semibold">Total</td>
                                         <td id="total" class="text-center fw-semibold"></td>
                                     </tr>
                                 </tfoot>

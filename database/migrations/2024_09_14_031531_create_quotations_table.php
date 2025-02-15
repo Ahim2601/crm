@@ -15,17 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->text('correlativo');
-            $table->string('customer_name');
             $table->decimal('subtotal', 10, 0);
             $table->decimal('iva', 10, 0);
+            $table->decimal('discount', 10, 0)->nullable();
             $table->decimal('grand_total', 10, 0);
-            $table->text('file_propuesta')->nullable();
             $table->text('note')->nullable();
-            $table->date('closing_date');
-            $table->string('closing_percentage');
-            $table->string('invoice_number')->nullable();
-            $table->enum('status', ['Cotizado', 'Facturado', 'Pagado'])->default('Cotizado');
+            $table->enum('status', ['Cotizado', 'Aceptada', 'Rechazada'])->default('Cotizado');
+            $table->enum('bussines', ['Ciro', 'Raisa'])->default('Raisa');
             $table->timestamps();
         });
     }
