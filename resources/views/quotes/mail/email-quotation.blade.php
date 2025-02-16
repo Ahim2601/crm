@@ -119,9 +119,13 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_text_3 .v-c
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr>
     <td style="padding-right: 0px;padding-left: 0px;" align="center">
-
-      <img align="center" border="0" src="https://sistema.tigroup.cl/assets/img/TIGroup.png" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 70%;max-width: 394.8px;" width="394.8"/>
-
+        @if($quotation->bussines == 'Raisa')
+        <img align="center" border="0"
+        src="{{ url('/') }}/assets/img/logo-raisa.png" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 70%;max-width: 394.8px;" width="394.8"/>
+        @else
+        <img align="center" border="0"
+        src="{{ url('/') }}/assets/img/logo-ciro-negro.png" alt="image" title="image" style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 70%;max-width: 394.8px;" width="394.8"/>
+        @endif
     </td>
   </tr>
 </table>
@@ -137,7 +141,7 @@ table, td { color: #000000; } @media (max-width: 480px) { #u_content_text_3 .v-c
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 45px;font-family:'Raleway',sans-serif;" align="left">
 
   <div class="v-font-size" style="font-size: 14px; line-height: 140%; text-align: justify; word-wrap: break-word;">
-    <p style="line-height: 140%;">Saludos estimado(a) {{ $quotation->customer_name }}, en el presente correo le adjuntamos la cotización solicitada.</p>
+    <p style="line-height: 140%;">Saludos estimado(a) {{ $quotation->customer->bussiness_name }}, en el presente correo le adjuntamos la cotización solicitada.</p>
   </div>
 
       </td>
