@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->string('unit')->nullable();
             $table->decimal('price', 10, 0);
+            $table->decimal('precio_neto', 10, 0);
             $table->decimal('subtotal', 10, 0)->nullable();
             $table->timestamps();
         });

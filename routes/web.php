@@ -2,11 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\MaintenanceController;
 
 
 Route::get('/', function () {
@@ -79,7 +81,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/usuarios/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/usuarios/{user}/update', [UserController::class, 'update'])->name('user.update');
     Route::get('/usuarios/{user}/delete', [UserController::class, 'destroy'])->name('user.destroy');
-;
+
+     # equipos
+     Route::get('/equipos', [TeamController::class, 'index'])->name('team.index');
+     Route::get('/equipos/create', [TeamController::class, 'create'])->name('team.create');
+     Route::post('/equipos/guardar', [TeamController::class, 'store'])->name('team.store');
+     Route::get('/equipos/{team}/editar', [TeamController::class, 'edit'])->name('team.edit');
+     Route::put('/equipos/{team}/actualizar', [TeamController::class, 'update'])->name('team.update');
+     Route::get('/equipos/{team}/eliminar', [TeamController::class, 'destroy'])->name('team.destroy');
+
+
+        # equipos
+        Route::get('/mantenimiento', [MaintenanceController::class, 'index'])->name('maintenance.index');
+        Route::get('/mantenimiento/create', [MaintenanceController::class, 'create'])->name('maintenance.create');
+        Route::post('/mantenimiento/guardar', [MaintenanceController::class, 'store'])->name('maintenance.store');
+        Route::get('/mantenimiento/{maintenance}/editar', [MaintenanceController::class, 'edit'])->name('maintenance.edit');
+        Route::put('/mantenimiento/{maintenance}/actualizar', [MaintenanceController::class, 'update'])->name('maintenance.update');
+        Route::get('/mantenimiento/{maintenance}/eliminar', [MaintenanceController::class, 'destroy'])->name('maintenance.destroy');
+
+        ;
 
 });
 

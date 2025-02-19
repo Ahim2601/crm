@@ -53,6 +53,24 @@
                     </a>
                 </li>
                 <li class="menu-item
+                    @if (Route::currentRouteName() == 'team.index' ||
+                        Route::currentRouteName() == 'team.create' ||
+                        Route::currentRouteName() == 'team.edit') active @endif">
+                    <a href="{{ route('team.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-group-line"></i>
+                        <div data-i18n="Equipos">Equipos</div>
+                    </a>
+                </li>
+                <li class="menu-item
+                    @if (Route::currentRouteName() == 'maintenance.index' ||
+                        Route::currentRouteName() == 'maintenance.create' ||
+                        Route::currentRouteName() == 'maintenance.edit') active @endif">
+                    <a href="{{ route('maintenance.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-group-line"></i>
+                        <div data-i18n="Mantenimiento">Mantenimiento</div>
+                    </a>
+                </li>
+                <li class="menu-item
                     @if (Route::currentRouteName() == 'customer.index' ||
                         Route::currentRouteName() == 'customer.create' ||
                         Route::currentRouteName() == 'customer.edit') active @endif">

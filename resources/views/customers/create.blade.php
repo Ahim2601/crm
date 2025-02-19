@@ -109,6 +109,24 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="mb-6 col-md-12">
+                                    <div class="form-floating form-floating-outline">
+                                        <input
+                                            type="text"
+                                            id="url"
+                                            name="url"
+                                            class="form-control @if($errors->has('url')) is-invalid @endif"
+                                            placeholder="Ingrese la url"
+                                            value="{{ old('url') }}"
+                                        />
+                                        <label for="code">Url</label>
+                                        @if($errors->has('url'))
+                                        <div class="invalid-feedback">
+                                            {{ $errors->first('url') }}
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
 
                                 <div class="mb-6 col-md-12">
                                     <div class="form-floating form-floating-outline">
@@ -128,6 +146,7 @@
                                         @endif
                                     </div>
                                 </div>
+
 
                             </div>
                             <div class="row justify-content-end">

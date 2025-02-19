@@ -17,19 +17,19 @@ class Customer extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function contracts()
+    public function quotes()
     {
-        return $this->hasMany(Contract::class, 'customer_id', 'id');
+        return $this->hasMany(Quotation::class, 'customer_id', 'id');
+    }
+    public function teams()
+    {
+        return $this->hasMany(Team::class, 'customer_id', 'id');
+    }
+    public function maintenance()
+    {
+        return $this->hasMany(Maintenance::class, 'customer_id', 'id');
     }
 
-    public function invoices()
-    {
-        return $this->hasMany(Invoice::class, 'customer_id', 'id');
-    }
 
-    public function contractrenewed()
-    {
-        return $this->hasMany(ContractsRenewed::class, 'customer_id', 'id');
-    }
 
 }
