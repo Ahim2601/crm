@@ -70,11 +70,11 @@ class MaintenanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function update(UpdateTeamRequest $request, $maintenance_id)
+    public function update(UpdateMaintenanceRequest $request, $maintenance_id)
     {
         $maintenance = Maintenance::find($maintenance_id);
-        $team->update($request->all());
-        return redirect()->route('Maintenance.index')->with('success', 'mantemient actualizado con exito');
+        $maintenance->update($request->all());
+        return redirect()->route('maintenance.index')->with('success', 'mantemient actualizado con exito');
     }
 
     /**

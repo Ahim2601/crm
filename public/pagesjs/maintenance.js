@@ -25,6 +25,7 @@
                 columns: [
                     {data: 'description', name: 'description'},
                     {data: 'total', name: 'total'},
+                    {data: 'status', name: 'status'},
                     {data: 'actions', name: 'actions', orderable: false, searchable: false},
                 ],
 

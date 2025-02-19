@@ -24,6 +24,7 @@
                     <tr>
                         <th>Descripcion</th>
                         <th>Total</th>
+                         <th>Estatus</th>
                         <th>Acciones</th>
                         <th style="width: 10px"></th>
                     </tr>

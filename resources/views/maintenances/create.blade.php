@@ -15,7 +15,7 @@
 
                     <div class="card-body">
                         <form id="formCategory" class="needs-validation" action="{{ route('maintenance.store') }}" method="POST">
-                           {{ $errors}}
+
                             @csrf
                                 <div class="mb-6 col-md-3">
                                     <div class="form-floating form-floating-outline">
@@ -60,6 +60,22 @@
                                     @if($errors->has('total'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('total') }}
+                                    </div>
+                                    @endif
+                                </div>
+
+                                  <div class="mb-3 col-md-4">
+                                    <input
+                                        type="text"
+                                        id="factura"
+                                        name="factura"
+                                        class="form-control @if($errors->has('factura')) is-invalid @endif"
+                                        placeholder="Factura"
+                                        value="{{ old('factura') }}"
+                                    />
+                                    @if($errors->has('factura'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('factura') }}
                                     </div>
                                     @endif
                                 </div>
