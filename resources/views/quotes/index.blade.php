@@ -129,7 +129,7 @@
 
     <!-- Modal ver cotización-->
     <div class="modal fade" id="QuotesModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalCenterTitle">Ver Cotizacion Nº <span id="id"></span> </h5>
@@ -164,11 +164,12 @@
                             <table class="table table-sm table-striped table-bordered nowrap w-100">
                                 <thead>
                                     <tr class="text-center text-uppercase fw-semibold">
-                                        <th>Reference</th>
-                                        <th>Articulo</th>
-                                        <th>Cantidad</th>
+                                        <th>Referencia</th>
+                                        <th>Descripción</th>
+                                        <th>Cant.</th>
                                         <th>Unidad</th>
-                                        <th>Precio</th>
+                                        <th>Precio + IVA</th>
+                                        <th>Precio - IVA</th>
                                         <th>Subtotal</th>
                                     </tr>
                                 </thead>
@@ -176,15 +177,19 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="5" class="text-end fw-semibold">Subtotal</td>
+                                        <td colspan="6" class="text-end fw-semibold">Subtotal</td>
                                         <td id="subtotal" class="text-center fw-semibold"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="5" class="text-end fw-semibold">IVA (% 19)</td>
+                                        <td colspan="6" class="text-end fw-semibold">IVA (% 19)</td>
                                         <td id="iva" class="text-center fw-semibold"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="5" class="text-end fw-semibold">Total</td>
+                                        <td colspan="6" class="text-end fw-semibold">Descuento (% <span id="porcentaje">0</span>)</td>
+                                        <td id="descuento" class="text-center fw-semibold"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" class="text-end fw-semibold">Total</td>
                                         <td id="total" class="text-center fw-semibold"></td>
                                     </tr>
                                 </tfoot>

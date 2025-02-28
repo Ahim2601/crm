@@ -31,6 +31,16 @@
                     </a>
                 </li>
                 <li class="menu-item
+                    @if (Route::currentRouteName() == 'customer.index' ||
+                        Route::currentRouteName() == 'customer.create' ||
+                        Route::currentRouteName() == 'customer.edit' ||
+                        Route::currentRouteName() == 'customer.show') active @endif">
+                    <a href="{{ route('customer.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-group-fill"></i>
+                        <div data-i18n="Clientes">Clientes</div>
+                    </a>
+                </li>
+                <li class="menu-item
                     @if (Route::currentRouteName() == 'quote.index' ||
                         Route::currentRouteName() == 'quote.create' ||
                         Route::currentRouteName() == 'quote.edit') active @endif">
@@ -39,56 +49,65 @@
                         <div data-i18n="Cotizaciones">Cotizaciones</div>
                     </a>
                 </li>
-
-
-
-
-                <li class="menu-item
-                    @if (Route::currentRouteName() == 'category.index' ||
-                        Route::currentRouteName() == 'category.create' ||
-                        Route::currentRouteName() == 'category.edit') active @endif">
-                    <a href="{{ route('category.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-stack-line"></i>
-                        <div data-i18n="Categorias">Categorias</div>
-                    </a>
-                </li>
-                <li class="menu-item
-                    @if (Route::currentRouteName() == 'team.index' ||
-                        Route::currentRouteName() == 'team.create' ||
-                        Route::currentRouteName() == 'team.edit') active @endif">
-                    <a href="{{ route('team.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-group-line"></i>
-                        <div data-i18n="Equipos">Equipos</div>
-                    </a>
-                </li>
+               
                 <li class="menu-item
                     @if (Route::currentRouteName() == 'maintenance.index' ||
                         Route::currentRouteName() == 'maintenance.create' ||
                         Route::currentRouteName() == 'maintenance.edit') active @endif">
                     <a href="{{ route('maintenance.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-group-line"></i>
+                        <i class="menu-icon tf-icons ri-file-settings-fill"></i>
                         <div data-i18n="Mantenimiento">Mantenimiento</div>
                     </a>
                 </li>
                 <li class="menu-item
-                    @if (Route::currentRouteName() == 'customer.index' ||
-                        Route::currentRouteName() == 'customer.create' ||
-                        Route::currentRouteName() == 'customer.edit') active @endif">
-                    <a href="{{ route('customer.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-group-line"></i>
-                        <div data-i18n="Clientes">Clientes</div>
+                    @if (Route::currentRouteName() == 'recordatorio.index') active @endif">
+                    <a href="{{ route('recordatorio.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons ri-survey-fill"></i>
+                        <div data-i18n="Proximos Mantenimiento">Proximos Mantenimiento</div>
                     </a>
                 </li>
 
-
                 <li class="menu-item
-                    @if (Route::currentRouteName() == 'user.index' ||
-                        Route::currentRouteName() == 'user.create' ||
-                        Route::currentRouteName() == 'user.edit') active @endif"">
-                    <a href="{{ route('user.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons ri-group-2-line"></i>
-                        <div data-i18n="Usuarios">Usuarios</div>
+                        @if (Route::currentRouteName() == 'user.index' ||
+                            Route::currentRouteName() == 'user.create' ||
+                            Route::currentRouteName() == 'user.edit' ||
+                            Route::currentRouteName() == 'category.index' ||
+                            Route::currentRouteName() == 'category.create' ||
+                            Route::currentRouteName() == 'category.edit') open @endif
+                    ">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle waves-effect">
+                        <i class="menu-icon tf-icons ri-list-settings-fill"></i>
+                        <div data-i18n="Configuraciones">Configuraciones</div>
                     </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item
+                            @if (Route::currentRouteName() == 'category.index' ||
+                                    Route::currentRouteName() == 'category.create' ||
+                                    Route::currentRouteName() == 'category.edit') 
+                                    active 
+                            @endif
+                            ">
+                            <a href="{{ route('category.index') }}" class="menu-link">
+                                <div data-i18n="Categorias">Categorias</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="charts-apex.html" class="menu-link">
+                                <div data-i18n="Roles">Roles</div>
+                            </a>
+                        </li>
+                        <li class="menu-item 
+                            @if (Route::currentRouteName() == 'user.index' ||
+                                    Route::currentRouteName() == 'user.create' ||
+                                    Route::currentRouteName() == 'user.edit') 
+                                    active 
+                            @endif
+                            ">
+                            <a href="{{ route('user.index') }}" class="menu-link">
+                                <div data-i18n="Usuarios">Usuarios</div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </aside>

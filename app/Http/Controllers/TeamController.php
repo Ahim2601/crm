@@ -11,67 +11,41 @@ use Yajra\DataTables\Facades\DataTables;
 
 class TeamController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = Team::all();
-            return DataTables::of($data)
-                ->addColumn('actions', function ($data) {
-                    return view('teams.partials.actions', ['id' => $data->id]);
-                })
-                ->rawColumns(['actions'])
-                ->make(true);
-        }
-        return view('teams.index');
-    }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($customer_id)
     {
-            $user = Customer::all();
-            return view('teams.create', compact('user'));
-
+        $customer = Customer::find($customer_id);
+        return view('teams.create', compact('customer'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTeamRequest $request)
+    public function store(StoreTeamRequest $request, $customer_id)
     {
-            Team::create($request->all());
-            return redirect()->route('team.index')->with('success', 'equipo creado con exito');
-
+        $request['customer_id'] = $customer_id;
+        Team::create($request->all());
+        return redirect()->route('customer.show', $customer_id)->with('success', 'Equipo creado con exito');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($team)
-    {
-        $team = Team::find($team);
-        return response()->json($team);
-    }
 
-    public function edit($team_id)
+    public function edit($team_id, $customer_id)
     {
         $team = Team::find($team_id);
-        $user = Customer::all();
-        return view('teams.edit', compact('team','user'));
+        return view('teams.edit', compact('team', 'customer_id'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function update(UpdateTeamRequest $request, $team_id)
+    public function update(UpdateTeamRequest $request, $team_id, $customer)
     {
         $team = Team::find($team_id);
         $team->update($request->all());
-        return redirect()->route('team.index')->with('success', 'equipo actualizada con exito');
+        return redirect()->route('customer.show', $customer)->with('success', 'equipo actualizada con exito');
     }
 
     /**
@@ -81,6 +55,6 @@ class TeamController extends Controller
     {
         $team = Team::find($team);
         $team->delete();
-        return redirect()->route('team.index')->with('success', 'Equipo eliminado con exito');
+        return redirect()->back()->with('success', 'Equipo eliminado con exito');
     }
 }

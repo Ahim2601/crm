@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->decimal('subtotal', 10, 0);
             $table->decimal('iva', 10, 0);
+            $table->decimal('discount_percent', 10, 0)->nullable();
             $table->decimal('discount', 10, 0)->nullable();
             $table->decimal('grand_total', 10, 0);
             $table->text('note')->nullable();

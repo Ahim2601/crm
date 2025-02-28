@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Team;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Imports\CustomerImport;
@@ -50,10 +51,19 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($customer)
+    public function show(Request $request, $customer)
     {
         $customer = Customer::find($customer);
-        return response()->json($customer);
+        if ($request->ajax()) {
+            $data = Team::where('customer_id', $customer->id)->get();
+            return DataTables::of($data)
+                ->addColumn('actions', function ($data) {
+                    return view('customers.partials.team-actions', ['id' => $data->id, 'customer_id' => $data->customer_id]);
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+        return view('customers.show', compact('customer'));
     }
 
     /**

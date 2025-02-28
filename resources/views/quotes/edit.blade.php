@@ -87,7 +87,7 @@
 
                                     </div>
                                 </div>
-                                <div class="mb-6 col-md-3">
+                                <div class="mb-6 col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         <input
                                             type="text"
@@ -99,7 +99,7 @@
                                         <label for="code">Descripción</label>
                                     </div>
                                 </div>
-                                <div class="mb-6 col-md-2">
+                                <div class="mb-6 col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         <input
                                             type="number"
@@ -115,12 +115,24 @@
                                     <div class="form-floating form-floating-outline">
                                         <input
                                             type="number"
-                                            id="price"
-                                            name="price"
+                                            id="priceIva"
+                                            name="priceIva"
                                             class="form-control"
                                             placeholder=""
                                         />
-                                        <label for="code">Precio Unitario</label>
+                                        <label for="code">Precio Unit. + IVA</label>
+                                    </div>
+                                </div>
+                                <div class="mb-6 col-md-2">
+                                    <div class="form-floating form-floating-outline">
+                                        <input
+                                            type="number"
+                                            id="priceUnit"
+                                            name="priceUnit"
+                                            class="form-control"
+                                            placeholder=""
+                                        />
+                                        <label for="code">Precio Unit. - IVA</label>
                                     </div>
                                 </div>
                                 <div class="mb-6 col-md-2">
@@ -133,13 +145,11 @@
                                         <label for="code">Tipo </label>
                                     </div>
                                 </div>
-                                <div class="mb-6 col-md-12 text-end">
+                                <div class="mb-6 col-md-1 text-end">
                                     <button type="button" id="add_product" class="btn btn-info mt-1">
                                         Agregar
                                     </button>
                                 </div>
-
-
                                 <div class="w-100"></div>
 
                                 <div class="mb-6 col-md-12">
@@ -151,7 +161,8 @@
                                                     <th>Descripcion</th>
                                                     <th>Cantidad</th>
                                                     <th>Tipo</th>
-                                                    <th>Valor</th>
+                                                    <th>Valor + IVA</th>
+                                                    <th>Valor - IVA</th>
                                                     <th>Valor Total</th>
                                                     <th>Acciones</th>
                                                 </tr>
@@ -159,19 +170,28 @@
                                             <tbody id="tbody_products"></tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colspan="5" class="text-end">SubTotal</td>
+                                                    <td colspan="6" class="text-end">SubTotal</td>
                                                     <td colspan="2"><span id="subtotal">0</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="5" class="text-end">Descuento (0%)</td>
-                                                    <td colspan="2"><span id="descuento">0</span></td>
+                                                    <td colspan="6" class="text-end p-0">
+                                                        <button type="button" id="discount"
+                                                            class="btn btn-sm btn-icon btn-text-secondary rounded-pill p-0"
+                                                            data-bs-toggle="modal" data-bs-target="#DiscountModal">
+                                                            <i class="ri-pencil-fill ri-14px p-0"
+                                                            data-bs-toggle="tooltip"
+                                                            title="Agregar Descuento"></i>
+                                                        </button>
+                                                        Descuento (<span id="porcentaje">0</span>%)
+                                                    </td>
+                                                    <td colspan="2"><span id="descuentoTotal">0</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="5" class="text-end">IVA (19%)</td>
+                                                    <td colspan="6" class="text-end">IVA (19%)</td>
                                                     <td colspan="2"><span id="iva">0</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="5" class="text-end">Total</td>
+                                                    <td colspan="6" class="text-end">Total</td>
                                                     <td colspan="2"><span id="total">0</span></td>
                                                 </tr>
                                             </tfoot>
@@ -179,11 +199,14 @@
                                     </div>
                                 </div>
                             </div>
+                            @include('quotes.partials.modal-discount')
                             <div class="row justify-content-end">
                                 <div class="mb-3 col-md-1">
                                     <input type="hidden" name="subtotal" id="subtotalcomplete">
                                     <input type="hidden" name="total" id="totalcomplete">
                                     <input type="hidden" name="iva" id="ivacomplete">
+                                    <input type="hidden" name="discount_percentage" id="discount_percentage">
+                                    <input type="hidden" name="discount" id="discountcomplete">
                                     <input type="hidden" name="array_products" id="array_products">
 
                                     <button type="submit" class="btn btn-primary float-end"
@@ -211,6 +234,8 @@
         // obtener la data de la tabla actual
         var oldData = @json($quotation->items);
 
+        $('#porcentaje').text({{$quotation->discount_percent}});
+
         $.each(oldData, function(index, value) {
             datosTabla.push({
                 'code': i,
@@ -218,7 +243,8 @@
                 'producto': value.product_name,
                 'quantity': value.quantity,
                 'tipo':  value.unit,
-                'price':  value.price,
+                'priceiva': value.price,
+                'priceunit': value.precio_neto,
                 'subtotal':  value.subtotal
             });
             $("#table_products tbody").append(
@@ -228,6 +254,7 @@
                     <td>`+value.quantity+`</td>
                     <td>`+value.unit+`</td>
                     <td>`+value.price+`</td>
+                    <td>`+value.precio_neto+`</td>
                     <td>`+value.subtotal+`</td>
                     <td>
                          <button type="button" class="btn btn-danger btn-sm"

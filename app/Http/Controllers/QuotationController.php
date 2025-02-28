@@ -109,6 +109,7 @@ class QuotationController extends Controller
             'user_id'        => auth()->user()->id,
             'subtotal'       => $request->subtotal,
             'iva'            => $request->iva,
+            'discount_percent' => $request->discount_percentage,
             'discount'       => $request->discount,
             'grand_total'    => $request->total,
             'note'           => $request->note,
@@ -121,7 +122,8 @@ class QuotationController extends Controller
                 'product_name'   => $key->producto,
                 'quantity'       => $key->quantity,
                 'unit'           => $key->tipo,
-                'price'          => $key->price,
+                'price'          => $key->priceiva,
+                'precio_neto'    => $key->priceunit,
                 'subtotal'       => $key->subtotal,
             ]);
         }
@@ -162,9 +164,10 @@ class QuotationController extends Controller
             'user_id'        => auth()->user()->id,
             'subtotal'       => $request->subtotal,
             'iva'            => $request->iva,
+            'discount_percent' => $request->discount_percentage,
             'discount'       => $request->discount,
             'grand_total'    => $request->total,
-            'note'           => $request->note
+            'note'           => $request->note,
         ]);
 
         $quote->items()->delete();
@@ -176,7 +179,8 @@ class QuotationController extends Controller
                 'product_name'   => $key->producto,
                 'quantity'       => $key->quantity,
                 'unit'           => $key->tipo,
-                'price'          => $key->price,
+                'price'          => $key->priceiva,
+                'precio_neto'    => $key->priceunit,
                 'subtotal'       => $key->subtotal,
             ]);
         }
@@ -204,6 +208,8 @@ class QuotationController extends Controller
     {
         $quotation = Quotation::find($quotation);
         return Pdf::loadView('quotes.pdfs.quotation', compact('quotation'))
+                ->setPaper('letter', 'portrait')
+                ->set_option('isHtml5ParserEnabled', true)
                 ->stream(''.config('app.name', 'Laravel').' - Cotizacion N '.$quotation->correlativo.'.pdf');
     }
 

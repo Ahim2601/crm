@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\CustomerRecordatoryController;
 
 
 Route::get('/', function () {
@@ -19,14 +20,6 @@ Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 
 
 Route::middleware('auth')->group(function () {
     # Data dashboard
-    Route::get('/sales-overview', [HomeController::class, 'saleoverview'])->name('dashboard.saleoverview');
-    Route::get('/services-due', [HomeController::class, 'services'])->name('dashboard.services');
-    Route::get('/quantity-contract', [HomeController::class, 'contractType'])->name('dashboard.contractType');
-    Route::get('/quantity-hosting', [HomeController::class, 'hostingType'])->name('dashboard.hostingType');
-    Route::get('/sales-years', [HomeController::class, 'sale_years'])->name('dashboard.sale_years');
-    Route::get('/purchase-month', [HomeController::class, 'purchase_month'])->name('dashboard.purchase_month');
-    Route::get('/expenses-month', [HomeController::class, 'expenses_month'])->name('dashboard.expenses_month');
-    Route::get('/invoices-pending-month', [HomeController::class, 'invoices_pending_month'])->name('dashboard.invoices_pending_month');
 
 
     # Profile
@@ -57,6 +50,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/clientes/importar', [CustomerController::class, 'import'])->name('customer.import');
     Route::post('/clientes/importar', [CustomerController::class, 'importData'])->name('customer.importData');
 
+     # equipos
+     Route::get('/equipos/{customer}/create', [TeamController::class, 'create'])->name('team.create');
+     Route::post('/equipos/{customer}/guardar', [TeamController::class, 'store'])->name('team.store');
+     Route::get('/equipos/{team}/{customer}/editar', [TeamController::class, 'edit'])->name('team.edit');
+     Route::put('/equipos/{team}/{customer}/actualizar', [TeamController::class, 'update'])->name('team.update');
+     Route::get('/equipos/{team}/eliminar', [TeamController::class, 'destroy'])->name('team.destroy');
 
     # Quotation
     Route::get('/cotizaciones', [QuotationController::class, 'index'])->name('quote.index');
@@ -82,25 +81,20 @@ Route::middleware('auth')->group(function () {
     Route::put('/usuarios/{user}/update', [UserController::class, 'update'])->name('user.update');
     Route::get('/usuarios/{user}/delete', [UserController::class, 'destroy'])->name('user.destroy');
 
-     # equipos
-     Route::get('/equipos', [TeamController::class, 'index'])->name('team.index');
-     Route::get('/equipos/create', [TeamController::class, 'create'])->name('team.create');
-     Route::post('/equipos/guardar', [TeamController::class, 'store'])->name('team.store');
-     Route::get('/equipos/{team}/editar', [TeamController::class, 'edit'])->name('team.edit');
-     Route::put('/equipos/{team}/actualizar', [TeamController::class, 'update'])->name('team.update');
-     Route::get('/equipos/{team}/eliminar', [TeamController::class, 'destroy'])->name('team.destroy');
+    # equipos
+    Route::get('/mantenimiento', [MaintenanceController::class, 'index'])->name('maintenance.index');
+    Route::get('/mantenimiento/create', [MaintenanceController::class, 'create'])->name('maintenance.create');
+    Route::get('/mantenimiento/get-teams', [MaintenanceController::class, 'getCustomersTeams'])->name('maintenance.getCustomersTeams');
+    Route::post('/mantenimiento/guardar', [MaintenanceController::class, 'store'])->name('maintenance.store');
+    Route::get('/mantenimiento/{maintenance}/show', [MaintenanceController::class, 'show'])->name('maintenance.show');
+    Route::get('/mantenimiento/{maintenance}/editar', [MaintenanceController::class, 'edit'])->name('maintenance.edit');
+    Route::put('/mantenimiento/{maintenance}/actualizar', [MaintenanceController::class, 'update'])->name('maintenance.update');
+    Route::get('/mantenimiento/{maintenance}/eliminar', [MaintenanceController::class, 'destroy'])->name('maintenance.destroy');
+    Route::post('/mantenimiento/cambiar-status', [MaintenanceController::class, 'cambiarStatus'])->name('maintenance.cambiarStatus');
+    Route::post('/mantenimiento/guardar-factura', [MaintenanceController::class, 'store_file_invoice'])->name('maintenance.store_file_invoice');
 
-
-        # equipos
-        Route::get('/mantenimiento', [MaintenanceController::class, 'index'])->name('maintenance.index');
-        Route::get('/mantenimiento/create', [MaintenanceController::class, 'create'])->name('maintenance.create');
-        Route::post('/mantenimiento/guardar', [MaintenanceController::class, 'store'])->name('maintenance.store');
-        Route::get('/mantenimiento/{maintenance}/editar', [MaintenanceController::class, 'edit'])->name('maintenance.edit');
-        Route::put('/mantenimiento/{maintenance}/actualizar', [MaintenanceController::class, 'update'])->name('maintenance.update');
-        Route::get('/mantenimiento/{maintenance}/eliminar', [MaintenanceController::class, 'destroy'])->name('maintenance.destroy');
-
-        ;
-
+    # Clientes recordatorio
+    Route::get('/recordatorios', [CustomerRecordatoryController::class, 'index'])->name('recordatorio.index');
 });
 
 require __DIR__.'/auth.php';

@@ -4,151 +4,289 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cotización</title>
+    <style>
+        @page{
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            width: 100%;
+            height: 140px;
+            position: relative;
+        }
+        .footer {
+            width: 100%;
+            height: 30px;
+            position: absolute;
+            background-color: #14213D;
+            bottom: 0;
+        }
 
+        .table-header {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .left-section {
+            background-color: #14213D;
+            width: 60%;
+            padding: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            vertical-align: middle;
+            position: relative;
+        }
+
+        .right-section {
+            background-color: #14213D;
+            width: 40%;
+            padding: 20px;
+            color: white;
+            text-align: right;
+            font-size: 16px;
+            vertical-align: middle;
+            position: relative;
+        }
+
+        .right-section .title {
+            color: #FCA311;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Línea diagonal simulada */
+        .triangle {
+            background-color: #FCA311;
+            width: 20px;
+            height: 140px;
+            position: absolute;
+            left: -150px;
+            top: 0;
+            transform: skewX(-25deg);
+        }
+
+        /* Línea horizontal simulada */
+        .triangle:after {
+            content: '';
+            background-color: #FCA311;
+            width: 330px;
+            height: 20px;
+            position: absolute;
+            left: -320px;
+            top: 90;
+            /* transform: skewY(-25deg); */
+        }
+        .invoice-details {
+            /* border: 1px solid #ddd; */
+            width: 90%;
+            margin-top: 20px;
+            margin-left: 5%;
+
+        }
+
+        .invoice-details td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        /* Estilos para los títulos de "Invoice To" y "Invoice From" */
+        .invoice-details .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .invoice-details .name {
+            font-size: 22px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .invoice-details .contact-info {
+            font-size: 14px;
+        }
+
+        .invoice-details .contact-info b {
+            color: black;
+        }
+
+        /* Estilos para la tabla de items */
+        .invoice-table {
+            width: 90%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-left: 5%;
+        }
+
+        .invoice-table th {
+            background-color: #FCA311;
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .invoice-table td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+        /* Sección de información de pago y contacto */
+        .payment-info {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .payment-info td {
+            padding: 5px;
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        .payment-info b {
+            color: black;
+        }
+
+        /* Estilos para la tabla de totales */
+        .totals-table {
+            width: 30%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-left: 65%;
+        }
+
+        .totals-table td {
+            padding: 8px;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .totals-table .label {
+            font-weight: bold;
+        }
+
+        .totals-table .total-row {
+            background-color: #FCA311;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* Estilos para términos y firma */
+        .terms {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .signature {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #000;
+            width: 200px;
+            float: right;
+        }
+
+    </style>
 </head>
 <body>
-    <table cellspacing="0" style="width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif">
+<div class="header">
+    <table class="table-header">
         <tr>
-            <th colspan="4" style="text-align: left; ">
+            <td class="left-section">
                 @if($quotation->bussines == 'Raisa')
-                <img src="{{ public_path('assets/img/logo.png') }}" alt="logo" height="100">
+                <img src="{{ public_path('assets/img/logo-raisa.png') }}" alt="logo" height="90">
                 @endif
                 @if($quotation->bussines == 'Ciro')
-                <img src="{{ public_path('assets/img/logo-ciro-negro.png') }}" alt="logo" height="100">
+                <img src="{{ public_path('assets/img/logo-ciro.png') }}" alt="logo" height="90">
                 @endif
-            </th>
-
-            <th colspan="4" style="text-align: right;">
-                <h3 style="line-height: 0;">
-                    Cotización N° {{ $quotation->id }}
-                </h3>
-                <h4 style="line-height: 0;">{{ \Carbon\Carbon::now('America/Santiago')->translatedFormat('l, d \d\e F \d\e Y'); }}</h5>
-            </th>
-        </tr>
-        <tr style="margin-top: 40px;">
-            <td colspan="8" style="text-align: center;padding-top: 20px;padding-bottom: 20px">
-                <strong>COTIZACIÓN</strong>
+            </td>
+            <td class="right-section">
+                <div class="title">COTIZACIÓN</div>
+                <div>Cotización Nº: #1970-{{ $quotation->id }}</div>
+                <div>{{ \Carbon\Carbon::now('America/Santiago')->translatedFormat('F d, Y'); }}</div>
+                <div class="triangle"></div>
             </td>
         </tr>
     </table>
-    <table cellspacing="0" border="2"
-            style="width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif;
-            text-align: center; font-size: 12px">
-            <tr>
-                <td colspan="2" style="background-color: #046c74; color: #fff">
-                    <strong>RUT:</strong>
-                </td>
-                <td colspan="2" style="background-color: #046c74; color: #fff">
-                    <strong>Cliente:</strong>
-                </td>
-                <td colspan="2" style="background-color: #046c74; color: #fff">
-                    <strong>Contacto:</strong>
-                </td>
-                <td colspan="2"style="background-color: #046c74; color: #fff" >
-                    <strong>Teléfono:</strong>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    {{ $quotation->customer->rut }}
-                </td>
-                <td colspan="2">
-                    {{ $quotation->customer->business_name }}
-                </td>
-                <td colspan="2">
-                    {{ $quotation->customer->name }}
-                </td>
-                <td colspan="2">
-                    {{ $quotation->customer->phone }}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" style="background-color: #046c74; color: #fff">
-                    <strong>Email:</strong>
-                </td>
-                <td colspan="4" style="background-color: #046c74; color: #fff">
-                    <strong>Dirección:</strong>
-                </td>
-                <td colspan="2" style="background-color: #046c74; color: #fff">
-                    <strong>Forma de Pago:</strong>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" >
-                    <span>{{ $quotation->customer->email }}</span>
-                </td>
-                <td colspan="4" >
-                    <span>{{ $quotation->customer->address }}</span>
-                </td>
-                <td colspan="2" >
-                    <span>Contado</span>
-                </td>
-            </tr>
-    </table>
-    <table  cellspacing="0" 2" cellpadding="2" style="border-radius: 5px; width: 100%; margin-top: 20px; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif">
-        <thead>
-            <tr style="text-align: center; font-size: 12px; background-color: #046c74; color: #fff">
-                <th>Item</th>
-                <th>Referencia</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th>Unidad</th>
-                <th>Valor</th>
-                <th>Valor Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($quotation->items as $item)
-                <tr style="text-align: center; font-size: 12px">
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->reference }}</td>
-                    <td>{{ $item->product_name }}</td>
-                    <td>{{ $item->quantity }}</td>
-                    <td>{{ $item->unit }}</td>
-                    <td>{{ number_format($item->price, 0, ',', '.') }}</td>
-                    <td>{{ number_format($item->quantity * $item->price , 0, ',', '.') }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-        <tfoot style="border-top: 1px solid #0483b2; padding-top: 20px; font-size: 12px">
-            <tr>
-                <td colspan="6" style="text-align: right; font-weight: bold">SubTotal:</td>
-                <td style="text-align: center;">{{ number_format($quotation->subtotal, 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td colspan="6" style="text-align: right; font-weight: bold">IVA (%19):</td>
-                <td style="text-align: center;">{{ number_format($quotation->iva, 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td colspan="6" style="text-align: right; font-weight: bold">Total:</td>
-                <td style="text-align: center;">$ {{ number_format($quotation->grand_total, 0, ',', '.') }}</td>
-            </tr>
-        </tfoot>
-    </table>
-    <table  cellspacing="0" cellpadding="2" style="border-radius: 5px; width: 100%; margin-top: 40px; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif">
-        <tbody>
-            <tr>
-                <td colspan="4" style="font-size: 14px;">
-                    <strong>Observaciones:</strong> {{ $quotation->note }}
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    @if($quotation->bussines == 'Raisa')
-    <div style="position: fixed; bottom: 0; width: 100%;">
-        <div style="text-align: justify;font-family: Arial, Helvetica, sans-serif; font-size: 12px">
-            <p>
-                Formas de pago: Efectivo , Transferencia y tarjetas de crédito (a esta última se aplica un 3% al total por el uso de la tarjeta). <br>
-                Garantía: 1 año por la marca + 2 años por Raisa Climatizaciones realizando las mantenciones preventivas al día. <br>
-                Incluye: 3 mts de cañeria y cableado de interconexión.<br/>
-                Contacto +569 3083 8331     contacto@raisaclimatizaciones.cl      www.raisaclimatizaciones.cl
-            </p>
-        </div>
-    </div>
-    @endif
-    @if($quotation->bussines == 'Ciro')
+</div>
 
-    @endif
+<!-- Sección de datos de facturación -->
+<table class="invoice-details">
+    <tr>
+        <td class="title">Cliente:</td>
+        <td class="title">Empresa:</td>
+    </tr>
+    <tr>
+        <td class="name">{{ $quotation->customer->business_name }}</td>
+        <td class="name">
+            @if($quotation->bussines == 'Raisa')
+            Raisa Climatizaciones
+            @endif
+            @if($quotation->bussines == 'Ciro')
+            Ciro Climatizaciones
+            @endif
+        </td>
+    </tr>
+    <tr>
+        <td class="contact-info">
+            <b>Contacto:</b> {{ $quotation->customer->name }}.<br>
+            <b>Tlf:</b> {{ $quotation->customer->phone }}<br>
+            <b>Email:</b> {{ $quotation->customer->email }}
+        </td>
+        <td class="contact-info">
+            <!-- Managing Director, Company Ltd.<br>
+            <b>Tlf:</b> +123 4567 8910<br>
+            <b>Email:</b> example@mail.com -->
+        </td>
+    </tr>
+</table>
 
+<!-- Tabla de productos/servicios -->
+<table class="invoice-table">
+    <tr>
+        <th style="width: 5%;">ITEM</th>
+        <th style="width: 5%;">REFERENCIA</th>
+        <th style="width: 40%;">DESCRIPCIÓN</th>
+        <th style="width: 10%;">UNIDAD</th>
+        <th style="width: 10%;">CANT.</th>
+        <th style="width: 15%;">PRECIO</th>
+        <th style="width: 15%;">TOTAL</th>
+    </tr>
+    @foreach ($quotation->items as $item)
+        <tr >
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ $item->reference }}</td>
+            <td>{{ $item->product_name }}</td>
+            <td>{{ $item->unit }}</td>
+            <td>{{ $item->quantity }}</td>
+            <td>{{ number_format($item->price, 0, ',', '.') }}</td>
+            <td>{{ number_format($item->quantity * $item->price , 0, ',', '.') }}</td>
+        </tr>
+    @endforeach
+
+</table>
+<!-- Totales -->
+<table class="totals-table">
+    <tr>
+        <td class="label">SUBTOTAL:</td>
+        <td>{{ number_format($quotation->subtotal, 0, ',', '.') }}</td>
+    </tr>
+    <tr>
+        <td class="label">IVA (19%):</td>
+        <td>{{ number_format($quotation->iva, 0, ',', '.') }}</td>
+    </tr>
+    <tr>
+        <td class="label">DESCUENTO ({{ $quotation->discount_percent }}%):</td>
+        <td>{{ number_format($quotation->discount, 0, ',', '.') }}</td>
+    </tr>
+    <tr class="total-row">
+        <td class="label">TOTAL:</td>
+        <td>{{ number_format($quotation->grand_total, 0, ',', '.') }}</td>
+    </tr>
+</table>
+
+<div class="footer"></div>
 </body>
 </html>

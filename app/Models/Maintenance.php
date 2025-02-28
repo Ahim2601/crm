@@ -7,4 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Maintenance extends Model
 {
     protected $guarded = [];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(MaintenanceDetail::class, 'maintenance_id', 'id');
+    }
 }

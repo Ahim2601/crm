@@ -23,15 +23,15 @@ class StoreMaintenanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => ['required',]
+            'customer_id' => ['required', 'integer'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'description.required' => 'El descripcion es requerido',
-
+            'customer_id.required' => 'El cliente es obligatorio',
+            'customer_id.integer' => 'El cliente es obligatorio',
         ];
     }
 }

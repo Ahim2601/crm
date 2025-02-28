@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Clientes')
+@section('title', 'Proximos mantenimientos')
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
@@ -10,25 +10,24 @@
     <!-- Ajax Sourced Server-side -->
     <div class="card">
         <div class="card-header header-elements border-bottom">
-            <h5 class="mb-0 me-2">Clientes</h5>
+            <h5 class="mb-0 me-2">Clientes y sus proximos mantenimientos</h5>
 
             <div class="card-header-elements ms-auto">
-                <a href="{{ route('customer.import') }}" class="btn btn-sm btn-secondary"
-                >Importar Cliente</a>
-                <a href="{{ route('customer.create') }}" class="btn btn-sm btn-primary"
-                >Crear Cliente</a>
+                
             </div>
         </div>
 
         <div class="card-datatable text-nowrap">
-            <table class="datatables-customer table table-sm">
+            <table class="datatables-customer-recordatory table table-sm">
                 <thead>
                     <tr>
-                        <th>Razón Social o Nombre</th>
-                        <th>RUT</th>
+                        <th>Razón Social</th>                        
                         <th>Representante</th>
-                        <th>Correo</th>
+                        <th>RUT</th>
+                        <th>Fecha Últ. <br> Mant.</th>
+                        <th>Fecha de Proximo <br> Mant.</th>
                         <th>Teléfono</th>
+                        <th>Correo</th>
                         <th style="width: 10px"></th>
                     </tr>
                 </thead>
@@ -42,5 +41,5 @@
 @section('scripts')
     <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
     <!-- Page JS -->
-    <script src="{{ asset('pagesjs/customer.js') }}"></script>
+    <script src="{{ asset('pagesjs/customer-recordatory.js') }}"></script>
 @endsection

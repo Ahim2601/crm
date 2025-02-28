@@ -186,12 +186,14 @@ $(function () {
         let reference = $('#reference').val();
         let producto = $('#producto').val();
         let quantity = parseFloat($('#quantity').val());
-        let price = parseFloat($('#price').val());
+        let priceIva = parseFloat($('#priceIva').val());
+        let priceUnit = parseFloat($('#priceUnit').val());
         let tipo = $('#tipo').val();
 
-        let subtotal = price * quantity;
+        let subtotal = Math.round(priceUnit * quantity);
+console.log(subtotal);
 
-        if (reference == '-- Seleccionar --' || producto == '' || quantity == '' || price == '' || tipo == '-- Seleccionar --') {
+        if (reference == '-- Seleccionar --' || producto == '' || quantity == '' || priceIva == '' || priceUnit == '' || tipo == '-- Seleccionar --') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -209,8 +211,9 @@ $(function () {
             'producto': producto,
             'quantity': quantity,
             'tipo': tipo,
-            'price': price,
-            'subtotal': subtotal.toFixed(0)
+            'priceiva': priceIva,
+            'priceunit': priceUnit,
+            'subtotal': subtotal
         });
 
         let code = i;
@@ -221,7 +224,8 @@ $(function () {
             <td>`+producto+`</td>
             <td>`+quantity+`</td>
             <td>`+tipo+`</td>
-            <td>`+price+`</td>
+            <td>`+priceIva+`</td>
+            <td>`+priceUnit+`</td>
             <td>`+subtotal.toFixed(0)+`</td>
             <td>
                 <button type="button" class="btn btn-danger btn-sm"
@@ -238,7 +242,8 @@ $(function () {
         $("#producto").val("");
         $("#tipo").val(null).trigger("change");
         $("#quantity").val('');
-        $("#price").val('');
+        $("#priceIva").val('');
+        $("#priceUnit").val('');
 
     });
 
@@ -278,27 +283,48 @@ $(function () {
         $('#subtotalcomplete').val(parseFloat($('#subtotal').text()));
         $('#totalcomplete').val(parseFloat($('#total').text()));
         $('#ivacomplete').val(parseFloat($('#iva').text()));
+        $('#discount_percentage').val(parseFloat($('#porcentaje').text()));
+        $('#discountcomplete').val(parseFloat($('#descuentoTotal').text()));
         $('#guardar').prop('disabled', true);
         $('#guardar').html('<span class="spinner-border me-1" role="status" aria-hidden="true"></span> Por favor, espere...');
         $('#formQuotation').submit();
     });
+
+    $('#add_discount').on('click', function() {
+        var descuento = $('#discountInput').val();
+        $('#porcentaje').text(descuento);
+        calcular();
+        $('#discountInput').val('');
+        $('#DiscountModal').modal('hide');
+    });
+
+    $('#priceIva').on('change', function() {
+        var producto = parseFloat($('#priceIva').val());
+        var precio = Math.round(producto / 1.19).toString();
+        $('#priceUnit').val(precio);
+    });
+
 });
 
 function calcular() {
     var totalfinal = 0;
     var totalIVA = 0;
     var total = 0;
+    var descuento = parseFloat($('#porcentaje').text()) / 100 || 0;
     for (let i = 0; i < datosTabla.length; i++) {
-        totalfinal += parseInt(datosTabla[i].subtotal);
+        totalfinal += parseFloat(datosTabla[i].subtotal);  
     }
-    totalIVA = parseFloat(totalfinal) * 0.19;
-    total = totalfinal + totalIVA;
+    totalDescuento = parseFloat(totalfinal * descuento);
+    totalIVA = Math.round(totalfinal * 0.19);
+    total = totalfinal + totalIVA - totalDescuento;
     $("#subtotal").empty();
-    $("#subtotal").text(parseFloat(totalfinal).toFixed(0));
+    $("#subtotal").text(totalfinal);
     $("#iva").empty();
-    $("#iva").text(totalIVA.toFixed(0));
+    $("#iva").text(totalIVA);
+    $("#descuentoTotal").empty();
+    $("#descuentoTotal").text(Math.round(totalDescuento));
     $("#total").empty();
-    $("#total").text(total.toFixed(0));
+    $("#total").text(Math.round(total));
 }
 
 function viewRecord(id) {
@@ -313,6 +339,8 @@ function viewRecord(id) {
             $('#totalfinal').text(numberFormat2.format(res.grand_total));
             $('#subtotal').text(numberFormat2.format(res.subtotal));
             $('#iva').text(numberFormat2.format(res.iva));
+            $('#porcentaje').text(res.discount_percent);
+            $('#descuento').text(numberFormat2.format(res.discount));
             $('#total').text(numberFormat2.format(res.grand_total));
             $('#note').text(res.note);
 
@@ -327,6 +355,7 @@ function viewRecord(id) {
                     .append('<td>' + value.quantity + '</td>')
                     .append('<td>' + value.unit + '</td>')
                     .append('<td>' + numberFormat2.format(value.price) + '</td>')
+                    .append('<td>' + numberFormat2.format(value.precio_neto) + '</td>')
                     .append('<td>' + numberFormat2.format(value.subtotal) + '</td>')
                     .append('</tr>');
             })

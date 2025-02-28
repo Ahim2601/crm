@@ -22,15 +22,15 @@ class StoreTeamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => ['required',]
+            'description' => ['required', 'unique:teams'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'description.required' => 'El descripcion es requerido',
-
+            'description.required' => 'El descripción es requerido',
+            'description.unique' => 'La descripción ya existe',
         ];
     }
 }

@@ -2,17 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Team;
-use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
-class TeamSeeder extends Seeder
+class PermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Team::create(['customer_id' => '1', 'description' => 'laptop', 'location' => 'cuarto']);
+        
     }
 }

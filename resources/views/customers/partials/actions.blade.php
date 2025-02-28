@@ -1,8 +1,8 @@
-<button type="button" class="btn btn-sm btn-icon btn-text-info
-    rounded-pill" onclick="viewRecord({{ $id }})"
+<a href="{{ route('customer.show', $id) }}" class="btn btn-sm btn-icon btn-text-info
+    rounded-pill"
     data-bs-toggle="tooltip" title="Ver Cliente">
     <i class="ri-eye-line ri-20px"></i>
-</button>
+</a>
 <a href="{{ route('customer.edit', $id) }}" class="btn btn-sm btn-icon btn-text-secondary
     rounded-pill"
     data-bs-toggle="tooltip" title="Editar Cliente">

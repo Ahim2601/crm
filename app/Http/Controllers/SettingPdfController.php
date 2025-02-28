@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MaintenanceDetail;
+use App\Models\SettingPdf;
 use Illuminate\Http\Request;
 
-class MaintenanceDetailController extends Controller
+class SettingPdfController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class MaintenanceDetailController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MaintenanceDetail $maintenanceDetail)
+    public function show(SettingPdf $settingPdf)
     {
         //
     }
@@ -42,7 +42,7 @@ class MaintenanceDetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(MaintenanceDetail $maintenanceDetail)
+    public function edit(SettingPdf $settingPdf)
     {
         //
     }
@@ -50,7 +50,7 @@ class MaintenanceDetailController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MaintenanceDetail $maintenanceDetail)
+    public function update(Request $request, SettingPdf $settingPdf)
     {
         //
     }
@@ -58,7 +58,7 @@ class MaintenanceDetailController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MaintenanceDetail $maintenanceDetail)
+    public function destroy(SettingPdf $settingPdf)
     {
         //
     }

@@ -8,28 +8,16 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Equipos</h5>
 
-                        <a href="{{ route('team.index') }}" class="btn btn-sm btn-secondary"
+                        <a href="{{ route('customer.show', $customer_id) }}" class="btn btn-sm btn-secondary"
                         ><i class="ri-arrow-left-line me-1"></i> Regresar</a>
                     </div>
                     <!-- <h5 class="card-header">Crear Categoría</h5> -->
 
                     <div class="card-body">
-                     <form id="formCategory" class="needs-validation" action="{{ route('team.update', $team->id) }}" method="POST">
+                     <form id="formCategory" class="needs-validation" action="{{ route('team.update', ['team' => $team->id, 'customer' => $customer_id]) }}" method="POST">
                             @csrf
                             @method('PUT')
-                                <div class="mb-6 col-md-3">
-                                    <div class="form-floating form-floating-outline">
-                                        <select id="reference" name="customer_id" class="form-select select2"
-                                        placeholder="Selecione una referencia">
-                                            <option value="">-- Seleccionar --</option>
-                                            @foreach ($user as $item)
-                                            <option value="{{ $item->id }}"> {{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <label for="code">Cliente</label>
 
-                                    </div>
-                                </div>
                             <div class="row">
                                 <div class="mb-3 col-md-6">
                                     <input
@@ -46,7 +34,6 @@
                                     </div>
                                     @endif
                                 </div>
-                            </div>
 
                                 <div class="mb-3 col-md-6">
                                     <input
@@ -63,14 +50,13 @@
                                     </div>
                                     @endif
                                 </div>
-
-
+                            </div>
 
                             <div class="row justify-content-end">
                                 <div class="mb-3 col-md-1">
                                     <button type="submit" class="btn btn-primary float-end">
                                         <i class="ri-save-2-line me-1"></i>
-                                        Guardar
+                                        Actualizar
                                     </button>
                                 </div>
                             </div>
