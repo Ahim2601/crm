@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SettingPdf extends Model
+class Rol extends Model
 {
-    protected $guarded = [];
+    protected $table = 'roles';
 }

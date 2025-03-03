@@ -3,27 +3,36 @@
     <i class="ri-more-2-line ri-20px"></i>
 </button>
 <div class="dropdown-menu dropdown-menu-end m-0" style="">
+        @can('quote.show')
         <a class="dropdown-item text-info" href="#"  onclick="viewRecord({{ $data->id }})">
             <i class="ri-eye-line ri-20px"></i>
             Ver Cotizacion
         </a>
+        @endcan
+        @can('quote.edit')
         @if ($data->status != 'Facturado' && $data->status != 'Pagado')
         <a class="dropdown-item text-primary" href="{{ route('quote.edit', $data->id) }}">
             <i class="ri-edit-2-line ri-20px"></i>
             Editar Cotizacion
         </a>
+        @endcan
+        @can('quote.destroy')
         <a class="dropdown-item text-danger" href="#" onclick="deleteRecord({{ $data->id }})" >
             <i class="ri-delete-bin-fill ri-20px"></i>
             Eliminar Cotizacion
         </a>
+        @endcan
         @endif
+        
         <a class="dropdown-item text-warning " href="{{ route('quote.quotepdf', $data->id) }}"
             target="_blank">
             <i class="ri-file-pdf-2-line ri-20px"></i> Cotizacion PDF
         </a>
+        @can('quote.sendEmailQuotepdf')
         <a class="dropdown-item text-success" href="{{ route('quote.sendEmailQuotepdf', $data->id) }}">
             <i class="ri-mail-send-line ri-20px"></i>
             Enviar Cotizacion
         </a>
+        @endcan
 </div>
 

@@ -44,7 +44,25 @@ class QuotationController extends Controller
                 ->select('quotations.*', 'users.name as user', 'customers.business_name as customer',
                     'customers.rut as rut')
                 ->orderBy('quotations.created_at', 'desc')
-                ->groupBy('quotations.id', 'users.name', 'customers.business_name', 'customers.rut');
+                ->groupBy('quotations.id', 
+                'quotations.created_at',
+                'quotations.updated_at',
+                'quotations.subtotal', 
+                'quotations.iva',
+                'quotations.discount',
+                'quotations.discount_percent',
+                'quotations.note',
+                'quotations.bussines',
+                'quotations.grand_total',
+                'quotations.status',
+                'quotations.customer_id',
+                'quotations.user_id',
+
+                'users.id',
+                'users.name', 
+                'customers.business_name', 
+                'customers.rut', 
+                'customers.id');
             return DataTables::of($data)
                 ->filter(function ($query) use ($request) {
                     if ($request->has('user_id') && $request->get('user_id') != '') {

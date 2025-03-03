@@ -24,7 +24,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'rol_id' => ['required', 'integer'],
+            'rol' => ['required'],
             'password' => ['nullable', 'string'],
         ];
     }
@@ -34,7 +34,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name.required' => 'El nombre es requerido.',
             'email.required' => 'El correo electrónico es requerido.',
-            'rol_id.required' => 'El rol es requerido.',
+            'rol.required' => 'El rol es requerido.',
         ];
     }
 }

@@ -49,6 +49,13 @@
                                         <span class="fw-medium"> <strong>Dirección:</strong> {{ $customer->address }}</span>
                                     </li>
                                 </ul>
+                                <ul
+                                    class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-4">
+                                    <li class="list-inline-item">
+                                        <i class="ri-link me-2 ri-24px "></i>
+                                        <span class="fw-medium"> <strong>Galeria Fotográfica:</strong> <a href="{{ $customer->url }}" target="_blank" >Ir a Galeria</a></span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

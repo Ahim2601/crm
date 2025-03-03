@@ -14,13 +14,12 @@ return new class extends Migration
         Schema::create('maintenance_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('maintenance_id')->constrained('maintenances')->onDelete('cascade');
-            $table->foreignId('team_id')->constrained('teams')->onDelete('cascade');
+            $table->foreignId('team_id')->nullable()->constrained('teams')->onDelete('cascade');
             $table->string('reference')->nullable();
             $table->string('description')->nullable();
             $table->integer('quantity');
             $table->string('unit')->nullable();
-            $table->decimal('price', 10, 0);
-            $table->decimal('precio_neto', 10, 0);
+            $table->decimal('price', 10, 0);                                                                     
             $table->decimal('subtotal', 10, 0)->nullable();
             $table->timestamps();
         });

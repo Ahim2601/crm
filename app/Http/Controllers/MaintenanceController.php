@@ -8,6 +8,8 @@ use App\Models\Customer;
 use App\Models\Maintenance;
 use Illuminate\Http\Request;
 use App\Models\MaintenanceDetail;
+use App\Exports\MaintenanceExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\StoreMaintenanceRequest;
 use App\Http\Controllers\MaintenanceController;
@@ -211,5 +213,10 @@ class MaintenanceController extends Controller
             'factura' => request()->file('invoice')->storeAs('facturas', request()->file('invoice')->getClientOriginalName(), 'public')
         ]);
         return redirect()->route('maintenance.index')->with('success', 'Factura cargada con exito');
+    }
+
+    public function exportar_mantenimientos(Request $request)
+    {
+        return Excel::download(new MaintenanceExport($request->start, $request->end), 'mantenimientos.xlsx');
     }
 }

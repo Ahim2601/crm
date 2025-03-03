@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\SettingPdfController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\CustomerRecordatoryController;
 
@@ -81,6 +83,15 @@ Route::middleware('auth')->group(function () {
     Route::put('/usuarios/{user}/update', [UserController::class, 'update'])->name('user.update');
     Route::get('/usuarios/{user}/delete', [UserController::class, 'destroy'])->name('user.destroy');
 
+    #roles
+    Route::get('/roles', [RoleController::class, 'index'])->name('role.index');
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('role.create');
+    Route::post('/roles', [RoleController::class, 'store'])->name('role.store');
+    Route::get('/roles/{role}/show', [RoleController::class, 'show'])->name('role.show');
+    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('role.edit');
+    Route::put('/roles/{role}/update', [RoleController::class, 'update'])->name('role.update');
+    Route::get('/roles/{role}/delete', [RoleController::class, 'destroy'])->name('role.destroy');
+
     # equipos
     Route::get('/mantenimiento', [MaintenanceController::class, 'index'])->name('maintenance.index');
     Route::get('/mantenimiento/create', [MaintenanceController::class, 'create'])->name('maintenance.create');
@@ -92,9 +103,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/mantenimiento/{maintenance}/eliminar', [MaintenanceController::class, 'destroy'])->name('maintenance.destroy');
     Route::post('/mantenimiento/cambiar-status', [MaintenanceController::class, 'cambiarStatus'])->name('maintenance.cambiarStatus');
     Route::post('/mantenimiento/guardar-factura', [MaintenanceController::class, 'store_file_invoice'])->name('maintenance.store_file_invoice');
+    Route::get('/mantenimiento/exportar', [MaintenanceController::class, 'exportar_mantenimientos'])->name('maintenance.exportar');
 
     # Clientes recordatorio
     Route::get('/recordatorios', [CustomerRecordatoryController::class, 'index'])->name('recordatorio.index');
+
+    # Settings pdf
+    Route::get('/configuraciones', [SettingPdfController::class, 'index'])->name('settings.index');
+    Route::get('/configuraciones/{setting}/editar', [SettingPdfController::class, 'edit'])->name('settings.edit');
+    Route::put('/configuraciones/{setting}/actualizar', [SettingPdfController::class, 'update'])->name('settings.update');
 });
 
 require __DIR__.'/auth.php';

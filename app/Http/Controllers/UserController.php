@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rols;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUser;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -18,16 +19,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $data = User::with('rol')->where('id', '!=', 1)->get();
-            return DataTables::of($data)
-                ->addColumn('actions', function ($data) {
-                    return view('users.partials.actions', ['id' => $data->id]);
-                })
-                ->rawColumns(['actions'])
-                ->make(true);
-        }
-        return view('users.index');
+        $data = User::where('name', '!=', 'Desarrollador')->get();
+        return view('users.index', compact('data'));
     }
 
     /**
@@ -35,7 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Rols::where('id', '!=', 1)->get();
+        $roles = Role::where('name', '!=', 'Super Admin')->get();
         return view('users.create', compact('roles'));
     }
 
@@ -45,7 +38,11 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $data = $request->all();
+        $data['name'] = $request->name;
+        $data['email'] = $request->email;
+        $data['password'] = bcrypt($request->password);
         $user = User::create($data);
+        $user->assignRole($request->rol);
         return redirect()->route('user.index')->with('success', 'Usuario creado con exito');
     }
 
@@ -56,7 +53,7 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $data = User::find($id);
-        $roles = Rols::all();
+        $roles = Role::where('name', '!=', 'Super Admin')->get();
         return view('users.edit', compact('data', 'roles'));
     }
 
@@ -65,14 +62,18 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, string $id)
     {
-        $data = $request->all();
         $user = User::find($id);
-        if ($data['password'] == null) {
-            unset($data['password']);
-        } else {
-            $data['password'] = Hash::make($data['password']);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        if($request->password){
+            $user->password = Hash::make($request->password);
         }
-        $user->update($data);
+        foreach ($user->getRoleNames() as $item) {
+            $user->removeRole($item);
+        }
+        $user->assignRole($request->rol);
+        $user->save();
+
         return redirect()->route('user.index')->with('success', 'Usuario actualizado con exito');
     }
 

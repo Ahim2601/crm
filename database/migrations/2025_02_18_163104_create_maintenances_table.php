@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('factura')->nullable();
             $table->date('start_date_maintenance')->nullable();
             $table->date('end_date_maintenance')->nullable();
-            $table->date('time_recordatory')->nullable();
+            $table->string('time_recordatory')->nullable();
             $table->timestamps();
         });
     }

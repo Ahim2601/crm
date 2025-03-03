@@ -156,9 +156,26 @@ $(function () {
         locale: 'es'
     });
 
+    $('#flatpickr-range-exportar').flatpickr({
+        mode: 'range',
+        locale: 'es'
+    });
+
 
     $('#flatpickr-range').on('change', function() {
         var fechaRango = $('#flatpickr-range').val(); // Obtiene el valor del input
+        var fechas = fechaRango.split(" a "); // Separa las fechas por el guión
+        console.log(fechas);
+        
+        if (fechas.length == 2) {
+            startInput = $('#startday').val(fechas[0]);
+            endInput = $('#endday').val(fechas[1]);
+            dt_ajax_table.DataTable().ajax.reload();
+        }
+    });
+
+    $('#flatpickr-range-exportar').on('change', function() {
+        var fechaRango = $('#flatpickr-range-exportar').val(); // Obtiene el valor del input
         var fechas = fechaRango.split(" a "); // Separa las fechas por el guión
         console.log(fechas);
         

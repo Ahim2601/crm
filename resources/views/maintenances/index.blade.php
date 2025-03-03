@@ -118,6 +118,9 @@
             </div>
 
             <div class="card-header-elements ms-auto">
+                <a href="javascript:void(0);" class="btn btn-sm btn-success"
+                    data-bs-toggle="modal" data-bs-target="#ExportarModal">Exportar
+                Mantenimientos</a>
                 <a href="{{ route('maintenance.create') }}" class="btn btn-sm btn-primary">Crear
                     Mantenimiento</a>
             </div>
@@ -143,6 +146,7 @@
     <!--/ Ajax Sourced Server-side -->
     @include('maintenances.partials.modal-show')
     @include('maintenances.partials.modal-invoice')
+    @include('maintenances.partials.modal-exportar')
     <!-- Modal cambiar estado-->
     <form id="my-form" action="{{ route('maintenance.cambiarStatus') }}" method="POST">
             @csrf

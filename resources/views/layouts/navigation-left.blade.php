@@ -81,6 +81,16 @@
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item
+                            @if (Route::currentRouteName() == 'settings.index' ||
+                                    Route::currentRouteName() == 'category.edit') 
+                                    active 
+                            @endif
+                            ">
+                            <a href="{{ route('settings.index') }}" class="menu-link">
+                                <div data-i18n="Empresas">Empresas</div>
+                            </a>
+                        </li>
+                        <li class="menu-item
                             @if (Route::currentRouteName() == 'category.index' ||
                                     Route::currentRouteName() == 'category.create' ||
                                     Route::currentRouteName() == 'category.edit') 
@@ -92,7 +102,7 @@
                             </a>
                         </li>
                         <li class="menu-item">
-                            <a href="charts-apex.html" class="menu-link">
+                            <a href="{{ route('role.index') }}" class="menu-link">
                                 <div data-i18n="Roles">Roles</div>
                             </a>
                         </li>

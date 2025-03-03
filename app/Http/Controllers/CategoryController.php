@@ -70,15 +70,7 @@ class CategoryController extends Controller
      */
     public function destroy($category_id)
     {
-        // dd($category_id);
-        $count = Product::where('category_id', $category_id)->count();
-        if ($count > 0) {
-            return redirect()->route('category.index')->with('error', 'La Categoría no puede ser eliminada, tiene productos relacionados');
-        }
-
         $data = Category::destroy($category_id);
-
-
         return redirect()->route('category.index')->with('success', 'Categoría eliminada con exito');
     }
 }

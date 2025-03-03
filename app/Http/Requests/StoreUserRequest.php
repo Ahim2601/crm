@@ -35,7 +35,7 @@ class StoreUserRequest extends FormRequest
             'name.required' => 'El nombre es requerido.',
             'email.required' => 'El correo electrónico es requerido.',
             'password.required' => 'La contraseña es requerida.',
-            'rol_id.required' => 'El rol es requerido.',
+            'rol.required' => 'El rol es requerido.',
         ];
     }
 }
