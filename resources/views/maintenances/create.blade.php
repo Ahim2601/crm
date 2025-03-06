@@ -30,7 +30,7 @@
                                         placeholder="Selecione una referencia">
                                             <option value="">-- Seleccionar --</option>
                                             @foreach ($user as $item)
-                                            <option value="{{ $item->id }}"> {{ $item->name }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->business_name }} - {{ $item->name }} </option>
                                             @endforeach
                                         </select>
                                         <label for="code">Cliente</label>

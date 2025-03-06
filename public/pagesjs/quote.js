@@ -66,6 +66,10 @@ $(function () {
                     name: 'grand_total'
                 },
                 {
+                    data: 'bussines',
+                    name: 'bussines'
+                },
+                {
                     data: 'status',
                     name: 'status'
                 },
@@ -89,7 +93,13 @@ $(function () {
                 }
             },
             {
-                targets: [5],
+                targets:[5],
+                render: function (data) {
+                    return data;
+                }
+            },
+            {
+                targets: [6],
                 render: function (data, type, row) {
                     if (data == 'Cotizado') {
                         return `
@@ -125,7 +135,7 @@ $(function () {
                 let api = this.api();
 
                 let total = api
-                    .column(3)
+                    .column(4)
                     .data()
                     .reduce(function (a, b) {
                         return parseFloat(a) + parseFloat(b);
@@ -184,16 +194,14 @@ $(function () {
 
     $('#add_product').on('click', function() {
         let reference = $('#reference').val();
-        let producto = $('#producto').val();
         let quantity = parseFloat($('#quantity').val());
         let priceIva = parseFloat($('#priceIva').val());
         let priceUnit = parseFloat($('#priceUnit').val());
         let tipo = $('#tipo').val();
 
         let subtotal = Math.round(priceUnit * quantity);
-console.log(subtotal);
 
-        if (reference == '-- Seleccionar --' || producto == '' || quantity == '' || priceIva == '' || priceUnit == '' || tipo == '-- Seleccionar --') {
+        if (reference == '-- Seleccionar --' ||  quantity == '' || priceIva == '' || priceUnit == '' || tipo == '-- Seleccionar --') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -208,7 +216,6 @@ console.log(subtotal);
         datosTabla.push({
             'code': i,
             'reference': reference,
-            'producto': producto,
             'quantity': quantity,
             'tipo': tipo,
             'priceiva': priceIva,
@@ -221,7 +228,6 @@ console.log(subtotal);
         $("#table_products tbody").append(
         `<tr id="row-`+code+`">
             <td>`+reference+`</td>
-            <td>`+producto+`</td>
             <td>`+quantity+`</td>
             <td>`+tipo+`</td>
             <td>`+priceIva+`</td>
@@ -239,7 +245,6 @@ console.log(subtotal);
 
         calcular();
         $("#reference").val(null).trigger("change");
-        $("#producto").val("");
         $("#tipo").val(null).trigger("change");
         $("#quantity").val('');
         $("#priceIva").val('');

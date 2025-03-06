@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
@@ -32,9 +33,22 @@ class SendQuotation extends Mailable
      */
     public function envelope(): Envelope
     {
-        return new Envelope(
-            subject: 'TIGroup - Cotización',
-        );
+        if ($this->quotation->bussines == 'Raisa') {
+            return new Envelope(
+                from: new Address(env('MAIL_FROM_ADDRESS'), 'Raisa Climatizaciones'),
+                subject: 'Cotización',
+                to: [new Address($this->quotation->customer->email)], // ← Solución
+                replyTo: [new Address('ventas@raisaclimatizaciones.cl', 'Raisa Climatizaciones')],
+            );
+        } else {
+            return new Envelope(
+                from: new Address(env('MAIL_FROM_ADDRESS'), 'Ciro Climatizaciones'),
+                subject: 'Cotización',
+                to: [new Address($this->quotation->customer->email)], // ← Solución
+                replyTo: [new Address('ventas@ciroclima.cl', 'Ciro Climatizaciones')],
+            );
+        }
+        
     }
 
     /**

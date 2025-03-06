@@ -118,6 +118,7 @@
                         <th>Vendedor</th>
                         <th>Valor Neto</th>
                         <th>Valor Total</th>
+                        <th>Empresa</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>

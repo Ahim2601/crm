@@ -18,7 +18,7 @@
             width: 100%;
             height: 30px;
             position: absolute;
-            background-color: #14213D;
+            background-color: {{ $empresa->color_pdf }};
             bottom: 0;
         }
 
@@ -28,7 +28,7 @@
         }
 
         .left-section {
-            background-color: #14213D;
+            background-color: {{ $empresa->color_pdf }};
             width: 60%;
             padding: 20px;
             color: white;
@@ -39,7 +39,7 @@
         }
 
         .right-section {
-            background-color: #14213D;
+            background-color: {{ $empresa->color_pdf }};
             width: 40%;
             padding: 20px;
             color: white;
@@ -50,14 +50,14 @@
         }
 
         .right-section .title {
-            color: #FCA311;
+            color: {{ $empresa->colorline_pdf }};
             font-size: 20px;
             font-weight: bold;
         }
 
         /* Línea diagonal simulada */
         .triangle {
-            background-color: #FCA311;
+            background-color: {{ $empresa->colorline_pdf }};
             width: 20px;
             height: 140px;
             position: absolute;
@@ -69,7 +69,7 @@
         /* Línea horizontal simulada */
         .triangle:after {
             content: '';
-            background-color: #FCA311;
+            background-color: {{ $empresa->colorline_pdf }};
             width: 330px;
             height: 20px;
             position: absolute;
@@ -119,7 +119,7 @@
         }
 
         .invoice-table th {
-            background-color: #FCA311;
+            background-color: {{ $empresa->color_pdf }};
             color: white;
             padding: 8px;
             text-align: left;
@@ -166,7 +166,7 @@
         }
 
         .totals-table .total-row {
-            background-color: #FCA311;
+            background-color: {{ $empresa->color_pdf }};
             color: white;
             font-weight: bold;
             font-size: 16px;
@@ -195,15 +195,10 @@
     <table class="table-header">
         <tr>
             <td class="left-section">
-                @if($quotation->bussines == 'Raisa')
-                <img src="{{ public_path('assets/img/logo-raisa.png') }}" alt="logo" height="90">
-                @endif
-                @if($quotation->bussines == 'Ciro')
-                <img src="{{ public_path('assets/img/logo-ciro.png') }}" alt="logo" height="90">
-                @endif
+                <img src="{{ public_path('') }}/{{ $empresa->logo }}" alt="logo" height="90">
             </td>
             <td class="right-section">
-                <div class="title">COTIZACIÓN</div>
+                <div class="title">COTIZACIÓN </div>
                 <div>Cotización Nº: #1970-{{ $quotation->id }}</div>
                 <div>{{ \Carbon\Carbon::now('America/Santiago')->translatedFormat('F d, Y'); }}</div>
                 <div class="triangle"></div>
@@ -221,12 +216,7 @@
     <tr>
         <td class="name">{{ $quotation->customer->business_name }}</td>
         <td class="name">
-            @if($quotation->bussines == 'Raisa')
-            Raisa Climatizaciones
-            @endif
-            @if($quotation->bussines == 'Ciro')
-            Ciro Climatizaciones
-            @endif
+            {{ $empresa->name }}
         </td>
     </tr>
     <tr>
@@ -236,9 +226,8 @@
             <b>Email:</b> {{ $quotation->customer->email }}
         </td>
         <td class="contact-info">
-            <!-- Managing Director, Company Ltd.<br>
-            <b>Tlf:</b> +123 4567 8910<br>
-            <b>Email:</b> example@mail.com -->
+            <b>Tlf:</b> {{ $empresa->phone }}<br>
+            <b>Email:</b> {{ $empresa->email }}
         </td>
     </tr>
 </table>
@@ -247,8 +236,7 @@
 <table class="invoice-table">
     <tr>
         <th style="width: 5%;">ITEM</th>
-        <th style="width: 5%;">REFERENCIA</th>
-        <th style="width: 40%;">DESCRIPCIÓN</th>
+        <th style="width: 45%;">DESCRIPCIÓN</th>
         <th style="width: 10%;">UNIDAD</th>
         <th style="width: 10%;">CANT.</th>
         <th style="width: 15%;">PRECIO</th>
@@ -258,7 +246,6 @@
         <tr >
             <td>{{ $loop->iteration }}</td>
             <td>{{ $item->reference }}</td>
-            <td>{{ $item->product_name }}</td>
             <td>{{ $item->unit }}</td>
             <td>{{ $item->quantity }}</td>
             <td>{{ number_format($item->price, 0, ',', '.') }}</td>

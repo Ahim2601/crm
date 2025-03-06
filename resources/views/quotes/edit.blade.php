@@ -29,7 +29,7 @@
                                         placeholder="Selecione una cliente">
                                             <option value="">-- Seleccionar --</option>
                                             @foreach ($customers as $item)
-                                            <option value="{{ $item->business_name }}" {{ $quotation->customer_id == $item->id ? 'selected' : '' }}>{{ $item->business_name }}</option>
+                                            <option value="{{ $item->business_name }}" {{ $quotation->customer_id == $item->id ? 'selected' : '' }}>{{ $item->business_name }} - {{ $item->name }}</option>
                                             @endforeach
                                         </select>
                                         <label for="code">Cliente</label>
@@ -74,7 +74,7 @@
 
                                 <div class="w-100"></div>
 
-                                <div class="mb-6 col-md-3">
+                                <div class="mb-6 col-md-6">
                                     <div class="form-floating form-floating-outline">
                                         <select id="reference" name="reference" class="form-select select2"
                                         placeholder="Selecione una referencia">
@@ -87,18 +87,7 @@
 
                                     </div>
                                 </div>
-                                <div class="mb-6 col-md-6">
-                                    <div class="form-floating form-floating-outline">
-                                        <input
-                                            type="text"
-                                            id="producto"
-                                            name="producto"
-                                            class="form-control"
-                                            placeholder=""
-                                        />
-                                        <label for="code">Descripción</label>
-                                    </div>
-                                </div>
+                                
                                 <div class="mb-6 col-md-3">
                                     <div class="form-floating form-floating-outline">
                                         <input
@@ -157,8 +146,7 @@
                                         <table class="table" id="table_products">
                                             <thead>
                                                 <tr>
-                                                    <th>Referencia</th>
-                                                    <th>Descripcion</th>
+                                                    <th width="35%">Descripcion</th>
                                                     <th>Cantidad</th>
                                                     <th>Tipo</th>
                                                     <th>Valor + IVA</th>
@@ -170,11 +158,11 @@
                                             <tbody id="tbody_products"></tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colspan="6" class="text-end">SubTotal</td>
+                                                    <td colspan="5" class="text-end">SubTotal</td>
                                                     <td colspan="2"><span id="subtotal">0</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="6" class="text-end p-0">
+                                                    <td colspan="5" class="text-end p-0">
                                                         <button type="button" id="discount"
                                                             class="btn btn-sm btn-icon btn-text-secondary rounded-pill p-0"
                                                             data-bs-toggle="modal" data-bs-target="#DiscountModal">
@@ -187,11 +175,11 @@
                                                     <td colspan="2"><span id="descuentoTotal">0</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="6" class="text-end">IVA (19%)</td>
+                                                    <td colspan="5" class="text-end">IVA (19%)</td>
                                                     <td colspan="2"><span id="iva">0</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="6" class="text-end">Total</td>
+                                                    <td colspan="5" class="text-end">Total</td>
                                                     <td colspan="2"><span id="total">0</span></td>
                                                 </tr>
                                             </tfoot>
@@ -240,7 +228,6 @@
             datosTabla.push({
                 'code': i,
                 'reference': value.reference,
-                'producto': value.product_name,
                 'quantity': value.quantity,
                 'tipo':  value.unit,
                 'priceiva': value.price,
@@ -250,7 +237,6 @@
             $("#table_products tbody").append(
                 `<tr id="row-`+i+`">
                     <td>`+value.reference+`</td>
-                    <td>`+value.product_name+`</td>
                     <td>`+value.quantity+`</td>
                     <td>`+value.unit+`</td>
                     <td>`+value.price+`</td>

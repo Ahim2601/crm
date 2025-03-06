@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Quotation;
+use App\Models\SettingPdf;
 use App\Mail\SendQuotation;
 use App\Models\Correlative;
 use Illuminate\Support\Str;
@@ -137,7 +138,6 @@ class QuotationController extends Controller
             QuotationItem::create([
                 'quotation_id'   => $quote->id,
                 'reference'      => $key->reference,
-                'product_name'   => $key->producto,
                 'quantity'       => $key->quantity,
                 'unit'           => $key->tipo,
                 'price'          => $key->priceiva,
@@ -186,6 +186,7 @@ class QuotationController extends Controller
             'discount'       => $request->discount,
             'grand_total'    => $request->total,
             'note'           => $request->note,
+            'bussines'       => $request->bussines
         ]);
 
         $quote->items()->delete();
@@ -194,7 +195,6 @@ class QuotationController extends Controller
             QuotationItem::create([
                 'quotation_id'   => $quote->id,
                 'reference'      => $key->reference,
-                'product_name'   => $key->producto,
                 'quantity'       => $key->quantity,
                 'unit'           => $key->tipo,
                 'price'          => $key->priceiva,
@@ -225,7 +225,15 @@ class QuotationController extends Controller
     public function quotepdf($quotation)
     {
         $quotation = Quotation::find($quotation);
-        return Pdf::loadView('quotes.pdfs.quotation', compact('quotation'))
+        if ($quotation->bussines == 'Raisa') {
+            $nameEmpresa = 'Raisa Climatizaciones';
+        } else {
+            $nameEmpresa = 'Ciro Climatizaciones';
+        }
+
+        $empresa = SettingPdf::where('name', $nameEmpresa)->first();
+       
+        return Pdf::loadView('quotes.pdfs.quotation', compact('quotation', 'empresa'))
                 ->setPaper('letter', 'portrait')
                 ->set_option('isHtml5ParserEnabled', true)
                 ->stream(''.config('app.name', 'Laravel').' - Cotizacion N '.$quotation->correlativo.'.pdf');
@@ -234,7 +242,14 @@ class QuotationController extends Controller
     public function sendEmailQuotepdf($quotation)
     {
         $quotation = Quotation::with('customer')->find($quotation);
+        if ($quotation->bussines == 'Raisa') {
+            $nameEmpresa = 'Raisa Climatizaciones';
+        } else {
+            $nameEmpresa = 'Ciro Climatizaciones';
+        }
 
+        $empresa = SettingPdf::where('name', $nameEmpresa)->first();
+       
         if ($quotation->customer->email == null) {
             return redirect()->route('quote.index')->with('error', 'El Cliente no posee correo para enviar la cotizacion');
         }
@@ -244,7 +259,7 @@ class QuotationController extends Controller
         $urlpdf = $publicpath.$namepdf;
 
 
-        $pdf = Pdf::loadView('quotes.pdfs.quotation', compact('quotation'))
+        $pdf = Pdf::loadView('quotes.pdfs.quotation', compact('quotation', 'empresa'))
                 ->save($urlpdf);
 
         try {
