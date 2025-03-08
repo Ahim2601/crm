@@ -195,13 +195,13 @@ $(function () {
     $('#add_product').on('click', function() {
         let reference = $('#reference').val();
         let quantity = parseFloat($('#quantity').val());
-        let priceIva = parseFloat($('#priceIva').val());
+        let priceIva = parseFloat($('#priceIva').val() ? $('#priceIva').val() : 0);
         let priceUnit = parseFloat($('#priceUnit').val());
         let tipo = $('#tipo').val();
 
         let subtotal = Math.round(priceUnit * quantity);
 
-        if (reference == '-- Seleccionar --' ||  quantity == '' || priceIva == '' || priceUnit == '' || tipo == '-- Seleccionar --') {
+        if (reference == '-- Seleccionar --' ||  quantity == '' ||  priceUnit == '' || tipo == '-- Seleccionar --') {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',

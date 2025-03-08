@@ -174,7 +174,11 @@
 
         /* Estilos para términos y firma */
         .terms {
+            width: 90%;
+            border-collapse: collapse;
             margin-top: 20px;
+            margin-left: 5%;
+            text-align: justify;
             font-size: 14px;
         }
 
@@ -248,8 +252,8 @@
             <td>{{ $item->reference }}</td>
             <td>{{ $item->unit }}</td>
             <td>{{ $item->quantity }}</td>
-            <td>{{ number_format($item->price, 0, ',', '.') }}</td>
-            <td>{{ number_format($item->quantity * $item->price , 0, ',', '.') }}</td>
+            <td>{{ number_format($item->precio_neto, 0, ',', '.') }}</td>
+            <td>{{ number_format($item->quantity * $item->precio_neto , 0, ',', '.') }}</td>
         </tr>
     @endforeach
 
@@ -271,6 +275,14 @@
     <tr class="total-row">
         <td class="label">TOTAL:</td>
         <td>{{ number_format($quotation->grand_total, 0, ',', '.') }}</td>
+    </tr>
+</table>
+
+<table class="terms">
+    <tr>
+        <td >
+            <b>Observaciones:</b> {{ $quotation->note }}
+        </td>
     </tr>
 </table>
 
