@@ -95,7 +95,7 @@
                                         <textarea name="message_email" id="message_email" 
                                         class="form-control @if($errors->has('message_email')) is-invalid @endif h-px-100" 
                                         placeholder="Ingrese observaciones" id="">{{ old('message_email', $data->message_email) }}</textarea>
-                                        <label for="code">Mensaje de correo al enviar la cotización</label>
+                                        <label for="code">Nota para pdf de cotizaciones</label>
                                         @if($errors->has('message_email'))
                                         <div class="invalid-feedback">
                                             {{ $errors->first('message_email') }}

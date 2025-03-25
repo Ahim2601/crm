@@ -182,6 +182,17 @@
             font-size: 14px;
         }
 
+        .terms2 {
+            width: 90%;
+            border-collapse: collapse;
+            
+            margin-left: 5%;
+            text-align: justify;
+            font-size: 10px;
+            position: absolute;
+            bottom: 30px;
+        }
+
         .signature {
             text-align: right;
             font-weight: bold;
@@ -282,6 +293,15 @@
     <tr>
         <td >
             <b>Observaciones:</b> {{ $quotation->note }}
+        </td>
+    </tr>
+</table>
+
+<table style="width: 90%; margin: 0 auto; text-align: justify;
+            font-size: 10px; position: absolute; bottom: 15em;">
+    <tr>
+        <td >
+           <p >{{ $empresa->message_email }}</p> 
         </td>
     </tr>
 </table>

@@ -84,6 +84,7 @@ class MaintenanceController extends Controller
             'start_date_maintenance'    => $request->start_date_maintenance,
             'end_date_maintenance'      => $request->end_date_maintenance,
             'time_recordatory'          => $request->time_recordatory,
+            'date_prox_maintenance'     => $this->sumDate($request->end_date_maintenance, $request->time_recordatory),
         ]);
         $servicios = json_decode($request->array_products);
         foreach ($servicios as $item) {
@@ -135,7 +136,7 @@ class MaintenanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function update(UpdateMaintenanceRequest $request, $maintenance_id)
+    public function update(Request $request, $maintenance_id)
     {
         $maintenance = Maintenance::find($maintenance_id);
         $maintenance->update([
@@ -150,6 +151,7 @@ class MaintenanceController extends Controller
             'start_date_maintenance'    => $request->start_date_maintenance,
             'end_date_maintenance'      => $request->end_date_maintenance,
             'time_recordatory'          => $request->time_recordatory,
+            'date_prox_maintenance'     => $this->sumDate($request->end_date_maintenance, $request->time_recordatory),
         ]);
         $maintenance->details()->delete();
         $servicios = json_decode($request->array_products);
@@ -218,5 +220,33 @@ class MaintenanceController extends Controller
     public function exportar_mantenimientos(Request $request)
     {
         return Excel::download(new MaintenanceExport($request->start, $request->end), 'mantenimientos.xlsx');
+    }
+
+    public function sumDate($date, $meses)
+    {
+        $fecha_actual = strtotime($date);
+        # segun los meses sumar los meses a la fecha actual
+        switch ($meses) {
+            case $meses == '1 mes':
+                $nueva_fecha = strtotime('+1 month', $fecha_actual);
+                break;
+            case $meses == '2 meses':
+                $nueva_fecha = strtotime('+2 month', $fecha_actual);
+                break;
+            case $meses == '3 meses':
+                $nueva_fecha = strtotime('+3 month', $fecha_actual);
+                break;
+            case $meses == '4 meses':
+                $nueva_fecha = strtotime('+4 month', $fecha_actual);
+                break;
+            case $meses == '5 meses':
+                $nueva_fecha = strtotime('+5 month', $fecha_actual);
+                break;
+            case $meses == '6 meses':
+                $nueva_fecha = strtotime('+6 month', $fecha_actual);
+                break;
+        }
+
+        return date('Y-m-d', $nueva_fecha);
     }
 }

@@ -11,6 +11,12 @@ $(function () {
         var dt_ajax = dt_ajax_table.dataTable({
             processing: true,
             serverSide: true,
+            ajax: {
+                url: "/recordatorios",
+                data: function(d) {
+                    d.month = $('#month').val();
+                }
+            },
             ajax: "/recordatorios",
             dataType: 'json',
             type: "POST",
@@ -23,16 +29,21 @@ $(function () {
                 }
             },
             columns: [
-                {data: 'empresa', name: 'empresa'},
-                {data: 'contacto', name: 'contacto'},
-                {data: 'rut', name: 'rut'},
-                {data: 'fecha_fin', name: 'fecha_fin'},
-                {data: 'proximo', name: 'proximo'},
-                {data: 'phone', name: 'phone'},
-                {data: 'email', name: 'email'},
-                {data: 'actions', name: 'actions', orderable: false, searchable: false},
+                {data: 'customer.business_name', name: 'customer.business_name'},
+                {data: 'customer.name', name: 'customer.name'},
+                {data: 'customer.rut', name: 'customer.rut'},
+                {data: 'end_date_maintenance', name: 'end_date_maintenance'},
+                {data: 'date_prox_maintenance', name: 'date_prox_maintenance'},
+                {data: 'customer.phone', name: 'customer.phone'},
+                {data: 'customer.email', name: 'customer.email'},
             ],
             columnDefs: [
+                {
+                    targets: 0,
+                    render: function (data, type, row) {
+                        return '<p class="text-wrap">  ' + data + '</p>';
+                    }
+                },
                 {
                     targets: 5,
                     render: function (data, type, row) {
@@ -44,10 +55,11 @@ $(function () {
         });
     }
 
-
-
-
-
+    $('#month').on('change', function() {
+    
+        dt_ajax_table.DataTable().ajax.reload();
+        console.log($('#month').val());
+    });
 });
 
 function viewRecord(id) {

@@ -37,7 +37,7 @@ class UpdateSettingRequest extends FormRequest
             'email.required' => 'El campo Correo es requerido.',
             'phone.required' => 'El campo Telefono es requerido.',
             'address.required' => 'El campo Dirección es requerido.',
-            'message_email.required' => 'El campo Mensaje de Correo es requerido.',
+            'message_email.required' => 'El campo Nota de Cotizacion es requerido.',
         ];
     }
 }
