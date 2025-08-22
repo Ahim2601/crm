@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\StoreCustomerRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCustomerRequest extends FormRequest
+class UpdateMaintenanceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +22,15 @@ class StoreCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'business_name' => ['required'],
-            'email' => ['required', 'email'],
+            'description' => ['required'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'business_name.required' => 'La Razon Social o Nombre es requerido',
-            'email.required' => 'El Correo es requerido',
-            'email.email' => 'El Correo debe ser válido',
+            'description.required' => 'La descripcion es obligatoria',
+
         ];
     }
 }

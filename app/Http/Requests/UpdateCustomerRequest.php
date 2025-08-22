@@ -27,9 +27,7 @@ class UpdateCustomerRequest extends FormRequest
         // Rule::unique(Customer::class)->ignore($this->id)
         return [
             'business_name' => ['required'],
-            'name' => ['required', 'string', 'max:255',],
             'email' => ['required', 'email'],
-            'rut' => ['required'],
         ];
     }
 
@@ -37,12 +35,8 @@ class UpdateCustomerRequest extends FormRequest
     {
         return [
             'business_name.required' => 'La Razon Social o Nombre es requerido',
-            'name.required' => 'El Nombre del Cliente es requerido',
-            'email.unique' => 'El Correo ya existe',
             'email.required' => 'El Correo es requerido',
             'email.email' => 'El Correo debe ser válido',
-            'rut.unique' => 'El Rut ya existe',
-            'rut.required' => 'El Rut es requerido',
         ];
     }
 }

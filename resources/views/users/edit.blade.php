@@ -38,17 +38,17 @@
                                 </div>
                                 <div class="mb-6 col-md-4">
                                     <div class="form-floating form-floating-outline">
-                                        <select id="rol_id" name="rol_id" class="form-select select2"
+                                        <select id="rol" name="rol" class="form-select select2"
                                             placeholder="Selecione un Rol">
                                             <option value="">-- Seleccionar --</option>
                                             @foreach($roles as $rol)
-                                            <option value="{{ $rol->id }}" {{ $data->rol_id == $rol->id ? 'selected' : ''  }} >{{ $rol->name }}</option>
+                                            <option value="{{ $rol->name }}" {{ $data->hasRole($rol->name) ? 'selected' : ''  }} >{{ $rol->name }}</option>
                                             @endforeach
                                         </select>
-                                        <label for="rol_id">Rol</label>
-                                        @if($errors->has('rol_id'))
+                                        <label for="rol">Rol</label>
+                                        @if($errors->has('rol'))
                                         <div class="invalid-feedback">
-                                            {{ $errors->first('rol_id') }}
+                                            {{ $errors->first('rol') }}
                                         </div>
                                         @endif
                                     </div>

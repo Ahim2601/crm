@@ -50,15 +50,14 @@ class User extends Authenticatable
         ];
     }
 
-    public function rol()
-    {
-        return $this->belongsTo(Rols::class, 'rol_id', 'id');
-    }
+    // La relación de roles se maneja a través de Spatie Permission
+    // No es necesario definir una relación personalizada
 
-    public function todolists()
-    {
-        return $this->hasMany(TodoList::class, 'user_id', 'id');
-    }
+    // Relación todolists comentada hasta que se implemente el modelo TodoList
+    // public function todolists()
+    // {
+    //     return $this->hasMany(TodoList::class, 'user_id', 'id');
+    // }
 
 
 }

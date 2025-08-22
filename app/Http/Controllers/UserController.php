@@ -83,9 +83,10 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $data = User::find($id);
-        if ($data->todolists()->count() > 0) {
-            return redirect()->route('user.index')->with('error', 'No se puede eliminar el usuario, posee registros relacionados');
-        }
+        // Verificación de registros relacionados comentada hasta que se implemente el modelo TodoList
+        // if ($data->todolists()->count() > 0) {
+        //     return redirect()->route('user.index')->with('error', 'No se puede eliminar el usuario, posee registros relacionados');
+        // }
         $data->delete();
 
         return redirect()->route('user.index')->with('success', 'Usuario eliminado con exito');

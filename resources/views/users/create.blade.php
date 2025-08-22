@@ -41,7 +41,7 @@
                                             placeholder="Selecione un Rol">
                                             <option value="">-- Seleccionar --</option>
                                             @foreach($roles as $rol)
-                                            <option value="{{ $item->name }}" @if (old('rol') == $item->name)  selected @endif>{{ $item->name }}</option>
+                                            <option value="{{ $rol->name }}" @if (old('rol') == $rol->name)  selected @endif>{{ $rol->name }}</option>
                                             @endforeach
                                         </select>
                                         <label for="rol">Rol</label>

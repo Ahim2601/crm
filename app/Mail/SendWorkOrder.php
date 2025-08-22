@@ -35,8 +35,6 @@ class SendWorkOrder extends Mailable
     {
         return new Envelope(
             subject: 'TIGroup - Orden de Trabajo',
-            to: $this->workorder->customer->email,
-            
         );
     }
 

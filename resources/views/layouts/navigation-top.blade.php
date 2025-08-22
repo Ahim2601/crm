@@ -52,15 +52,6 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                            <i class="ri-user-3-line ri-22px me-3"></i><span class="align-middle">Mi Perfil</span>
-                        </a>
-                    </li>
-                    <li>
-                        <div class="dropdown-divider"></div>
-                    </li>
-
-                    <li>
                         <div class="d-grid px-4 pt-2 pb-1">
                             <form method="POST" action="{{ route('logout') }}">
                             @csrf
